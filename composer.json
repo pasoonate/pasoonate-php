@@ -1,0 +1,30 @@
+{
+  "name": "MahdiBagheri/Pasoonate",
+  "description": "",
+  "keywords": [
+    "calendar",
+    "Persian Calendar",
+    "Gregorian Calendar",
+    "Hijri Calendar",
+    "Date Conversion"
+  ],
+  "license": "",
+  "authors": [
+    {
+      "name": "Mahdi Bagheri",
+      "email": "mb.programmer@yahoo.com"
+    }
+  ],
+  "type": "project",
+  "require": {
+    "php": ">=5.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.2.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "MahdiBagheri\\Pasoonate\\": "src/"
+    }
+  }
+}
