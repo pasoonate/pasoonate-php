@@ -1,3 +1,3 @@
-Composer Pasoon Date Library
+PHP version of Pasoon Date Library
 =========================
-All the credit goes to Majid Ataee
+All credit goes to [Majid Ataee](https://github.com/ataiemajid63/pasoonate-js/)
