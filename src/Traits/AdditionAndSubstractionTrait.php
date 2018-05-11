@@ -1,6 +1,6 @@
 <?php
 
-namespace MahdiBagheri\Pasoonate\Traits;
+namespace Pasoonate\Traits;
 
 trait AdditionAndSubstractionTrait
 {

@@ -18,7 +18,7 @@ class PasoonateTest extends PHPUnit_Framework_TestCase
      */
     public function testIsThereAnySyntaxError()
     {
-        $var = \MahdiBagheri\Pasoonate\Pasoonate::make();
+        $var = \Pasoonate\Pasoonate::make();
         echo is_object($var);
         $this->assertTrue(is_object($var));
         unset($var);

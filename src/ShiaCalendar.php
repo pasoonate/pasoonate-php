@@ -1,6 +1,6 @@
 <?php
 
-namespace MahdiBagheri\Pasoonate;
+namespace Pasoonate;
 
 class ShiaCalendar extends Calendar
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace MahdiBagheri\Pasoonate;
+namespace Pasoonate;
 
-use MahdiBagheri\Pasoonate\Traits\AdditionAndSubstractionTrait;
-use MahdiBagheri\Pasoonate\Traits\BaseMethodsTrait;
+use Pasoonate\Traits\AdditionAndSubstractionTrait;
+use Pasoonate\Traits\BaseMethodsTrait;
 
 class CalendarManager
 {

@@ -16,7 +16,6 @@
       "email": "mb.programmer@yahoo.com"
     }
   ],
-  "type": "project",
   "require": {
     "php": ">=5.4"
   },
@@ -25,7 +24,7 @@
   },
   "autoload": {
     "psr-4": {
-      "MahdiBagheri\\Pasoonate\\": "src/"
+      "Pasoonate\\": "src/"
     }
   }
 }
