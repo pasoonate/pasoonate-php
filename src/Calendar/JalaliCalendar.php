@@ -1,6 +1,6 @@
 <?php
 
-namespace Pasoonate;
+namespace Pasoonate\Calendar;
 
 class JalaliCalendar extends Calendar
 {
@@ -9,6 +9,22 @@ class JalaliCalendar extends Calendar
     public function __construct()
     {
 
+    }
+
+    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
+    {
+
+        $epochBase = $year - (($year >= 0) ? 474 : 473);
+        $epochYear = 474 + $this->mod($epochBase, 2820);
+        $julianDay = $day;
+
+        $julianDay += $month <= 7 ? ($month - 1) * 31 : (($month - 1) * 30) + 6;
+        $julianDay += floor((($epochYear * 682) - 110) / 2816);
+        $julianDay += ($epochYear - 1) * 365;
+        $julianDay += floor($epochBase / 2820) * 1029983;
+        $julianDay += $this::JalaliEpoch - 1;
+
+        return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
 
     public function julianDayToDate($julianDay)
@@ -25,6 +41,7 @@ class JalaliCalendar extends Calendar
         $ycycle = null;
         $aux1 = null;
         $aux2 = null;
+
         if ($cyear == 1029982) {
             $ycycle = 2820;
         } else {
@@ -32,13 +49,16 @@ class JalaliCalendar extends Calendar
             $aux2 = $this->mod($cyear, 366);
             $ycycle = floor(((2134 * $aux1) + (2816 * $aux2) + 2815) / 1028522) + $aux1 + 1;
         }
+
         $year = $ycycle + (2820 * $cycle) + 474;
+
         if ($year <= 0) {
             $year--;
         }
-        $yday = $julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second)) + 1;
+
+        $yday = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second)) + 1;
         $month = ($yday <= 186) ? ceil($yday / 31) : ceil(($yday - 6) / 30);
-        $day = $julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second)) + 1;
+        $day = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second))) + 1;
 
         $date = new \stdClass();
         $date->year = $year;
@@ -50,30 +70,18 @@ class JalaliCalendar extends Calendar
         return $date;
     }
 
-    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
-    {
-        $epochBase = $year - (($year >= 0) ? 474 : 473);
-        $epochYear = 474 + $this->mod($epochBase, 2820);
-        $julianDay = $day;
-
-        $julianDay += $month <= 7 ? ($month - 1) * 31 : (($month - 1) * 30) + 6;
-        $julianDay += floor((($epochYear * 682) - 110) / 2816);
-        $julianDay += ($epochYear - 1) * 365;
-        $julianDay += floor($epochBase / 2820) * 1029983;
-
-        $julianDay += $this::JalaliEpoch - 1;
-        return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
-    }
-
     public function daysInMonth($year, $month)
-    {
-        $gregorianDaysInMonth = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29);
+    {        
+        $gregorianDaysInMonth = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29); //30
+
         if ($month < 1 || $month > 12) {
             throw new RangeException("$month Out Of Range Exception");
         }
+
         if ($year && $this->isLeap($year) && $month == 12) {
             return 30;
         }
+
         return $gregorianDaysInMonth[$month - 1];
     }
 
