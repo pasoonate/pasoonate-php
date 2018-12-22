@@ -13,7 +13,7 @@ class ShiaCalendar extends Calendar
 
     public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
     {
-        const $daysInMonth = $this->daysInMonth($year, $month);
+        $daysInMonth = $this->daysInMonth($year, $month);
         $dayOfYear = $day;
         $julianDay = 0;
 
@@ -24,7 +24,7 @@ class ShiaCalendar extends Calendar
         }
 
         for ($m = 1; $m < $month; $m++) {
-            $dayOfYear += $this_>daysInMonth($year, $m);
+            $dayOfYear += $this->daysInMonth($year, $m);
         }
 
         $julianDay += ($year - 1) * Constants::DaysOfShiaYear;
@@ -35,15 +35,6 @@ class ShiaCalendar extends Calendar
 
     public function julianDayToDate($julianDay)
     {
-
-        for (let i = 1; i <= 12; i++) {
-            days += this.daysInMonth(year, i);
-            if (dayOfYear <= days) {
-                month = i;
-                break;
-            }
-        }
-
         $time = $this->extractJulianDayTime($julianDay);
 
         $julianDay = $this->julianDayWithoutTime($julianDay);
@@ -79,16 +70,16 @@ class ShiaCalendar extends Calendar
 
         $islamicDaysInMonth = array(30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29); //30
         $shiaDaysInMonthInYears = array(
-            1435: array(29, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29, 30),
-            1436: array(29, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30, 30),
-            1437: array(29, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30),
-            1438: array(29, 30, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30),
-            1439: array(29, 30, 30, 30, 30, 29, 30, 29, 29, 30, 29, 29),
-            1440: array(30, 29, 30, 30, 30, 29, 29, 30, 29, 30, 29, 29),
+            1435 => array(29, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29, 30),
+            1436 => array(29, 30, 29, 29, 30, 29, 30, 29, 30, 29, 30, 30),
+            1437 => array(29, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30, 30),
+            1438 => array(29, 30, 30, 30, 29, 30, 29, 29, 30, 29, 29, 30),
+            1439 => array(29, 30, 30, 30, 30, 29, 30, 29, 29, 30, 29, 29),
+            1440 => array(30, 29, 30, 30, 30, 29, 29, 30, 29, 30, 29, 29),
         );        
     
         if ($month < 1 || $month > 12) {
-            throw new RangeException("$month Out Of Range Exception");
+            throw new \RangeException("$month Out Of Range Exception");
         }
 
         if (!isset($shiaDaysInMonthInYears[$year])) {

@@ -4,24 +4,24 @@ namespace Pasoonate;
 
 class Localization
 {
-	const J1970 = 2440587.5; // Julian date at Unix epoch: 1970-01-01
-	const DayInSecond = 86400;
-	const ShiaEpoch = 1948439.5;
-	const JalaliEpoch = 1948320.5;
-	const GregorianEpoch = 1721425.5;
-	const IslamicEpoch = 1948439.5;
-	const DaysOfIslamicYear = 354;
-	const DaysOfShiaYear = 354;
-	const DaysOfJalaliYear = 365;
-	const DaysOfGregorianYear = 365;
+    const J1970 = 2440587.5; // Julian date at Unix epoch: 1970-01-01
+    const DayInSecond = 86400;
+    const ShiaEpoch = 1948439.5;
+    const JalaliEpoch = 1948320.5;
+    const GregorianEpoch = 1721425.5;
+    const IslamicEpoch = 1948439.5;
+    const DaysOfIslamicYear = 354;
+    const DaysOfShiaYear = 354;
+    const DaysOfJalaliYear = 365;
+    const DaysOfGregorianYear = 365;
 
-	public $_langs;
-	public $_$locale;
+    public $_langs;
+    public $_locale;
 
     public function __construct()
     {
-		$this->_langs = [];
-		$this->_$locale = 'fa';    	    	
+        $this->_langs = [];
+        $this->_locale = 'fa';
     }
 
     public function setLang($name, $trans)
@@ -29,19 +29,19 @@ class Localization
         $this->_langs[$name] = $trans;
     }
 
-    public function set$locale($locale)
+    public function setLocale($locale)
     {
-        $this->_$locale = $locale ?? $this->_$locale;
+        $this->_locale = $locale ?? $this->_locale;
     }
 
-    public function getlocale()
+    public function getLocale()
     {
-        return $this->_$locale;
+        return $this->_locale;
     }
 
-    public function islocale($locale)
+    public function isLocale($locale)
     {
-        return $this->_$locale === $locale;
+        return $this->_locale === $locale;
     }
 
     public function hasTransKey($key, $locale)
@@ -49,7 +49,7 @@ class Localization
         $subKeys = explode('.', $key);
         if (!isset($this->_langs[$locale])) return false;
         $result = $this->_langs[$locale];
-        for ($i = 0; $i < strlen($subKeys); $i++) {
+        for ($i = 0; $i < count($subKeys); $i++) {
             if (in_array($result, $subKeys[$i])) {
                 $result = $result[$subKeys[$i]];
                 continue;
@@ -69,7 +69,7 @@ class Localization
 
     public function trans($key, $locale)
     {
-        $locale = $locale ?? $this->_$locale;
+        $locale = $locale ?? $this->_locale;
         $key = $key ?? '';
         return $this->getTrans($key, $locale);
     }

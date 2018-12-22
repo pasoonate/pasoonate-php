@@ -2,8 +2,6 @@
 
 namespace Pasoonate\Formatter;
 
-use Pasoonate\CalendarManager;
-
 class SimpleDateFormat
 {	
 	const Signs = ['y', 'm', 'd'];

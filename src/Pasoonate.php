@@ -3,49 +3,51 @@
 namespace Pasoonate;
 
 use Pasoonate\Calendar\CalendarManager;
-use Pasoonate\Formatter\SimpleDateFormat;
 use Pasoonate\Formatter\DateFormat;
+use Pasoonate\Formatter\SimpleDateFormat;
 
 class Pasoonate extends Constants
 {
+    /**
+     * @var Localization
+     */
+    public static $localization;
 
-	public $localization;
-
-	public $formatter;
-
-    public function __construct()
-    {
-    	$this->localization = new Localization();
-    	$this->formatter = new SimpleDateFormat();
-    }
+    /**
+     * @var Formatter\DateFormat
+     */
+    public static $formatter;
 
     public static function make($timestamp = null, $timezoneOffset = null)
     {
         return new CalendarManager($timestamp, $timezoneOffset);
     }
 
-	public static function trans($key, $locale)
-	{
-		return $this->localization->trans($key, $locale);
-	}
+    public static function trans($key, $locale)
+    {
+        return self::$localization->trans($key, $locale);
+    }
 
-	public static function setLocale($locale)
-	{
-		$this->localization->setLocale($locale);
-	}
+    public static function setLocale($locale)
+    {
+        self::$localization->setLocale($locale);
+    }
 
-	public static function getLocal()
-	{
-		return $this->localization->getLocal();
-	}
+    public static function getLocal()
+    {
+        return self::$localization->getLocal();
+    }
 
-	public static function isLocal($locale)
-	{
-		return $this->localization->isLocal($locale);
-	}
+    public static function isLocal($locale)
+    {
+        return self::$localization->isLocal($locale);
+    }
 
-	public static function setFormatter($formatter)
-	{
-		$this->formatter = $formatter instanceof DateFormat ? $formatter : new SimpleDateFormat();
-	}   
+    public static function setFormatter($formatter)
+    {
+        self::$formatter = $formatter instanceof DateFormat ? $formatter : new SimpleDateFormat();
+    }
 }
+
+Pasoonate::$localization = new Localization();
+Pasoonate::$formatter = new SimpleDateFormat();

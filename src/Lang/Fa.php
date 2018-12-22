@@ -2,23 +2,21 @@
 
 namespace Pasoonate\Lang;
 
-use Pasoonate\CalendarManager;
-
 class Fa
 {
-	public $gregorian = [
-		'day_name' => [
-			'sunday' => 'Sunday'
-		]
-	];
+    public $gregorian = [
+        'day_name' => [
+            'sunday' => 'Sunday'
+        ]
+    ];
 
-	public $jalali = [];
+    public $jalali = [];
 
-	public $jalali = [];
-	
-	public $shia = [];
+    public $islamic = [];
 
-	public function __construct()
+    public $shia = [];
+
+    public function __construct()
     {
 
     }

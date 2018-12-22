@@ -56,7 +56,7 @@ class JalaliCalendar extends Calendar
             $year--;
         }
 
-        $yday = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second)) + 1;
+        $yday = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second)) + 1);
         $month = ($yday <= 186) ? ceil($yday / 31) : ceil(($yday - 6) / 30);
         $day = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second))) + 1;
 
