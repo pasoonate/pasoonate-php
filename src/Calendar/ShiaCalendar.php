@@ -8,29 +8,7 @@ class ShiaCalendar extends Calendar
 
     public function __construct()
     {
-
-    }
-
-    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
-    {
-        $daysInMonth = $this->daysInMonth($year, $month);
-        $dayOfYear = $day;
-        $julianDay = 0;
-
-        if($day > $daysInMonth) {
-            $dayOfYear = $day - $daysInMonth;
-            $year = $month === 12 ? $year + 1 : $year;
-            $month = $month === 12 ? 1 : $month + 1;
-        }
-
-        for ($m = 1; $m < $month; $m++) {
-            $dayOfYear += $this->daysInMonth($year, $m);
-        }
-
-        $julianDay += ($year - 1) * Constants::DaysOfShiaYear;
-        $julianDay += floor(((11 * $year) + 3) / 30);
-        $julianDay += $this::ShiaEpoch - ($year === 1440 ? 2 : 1);
-        return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
+        $this->name = 'shia';
     }
 
     public function julianDayToDate($julianDay)
@@ -65,9 +43,30 @@ class ShiaCalendar extends Calendar
         return $date;
     }
 
+    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
+    {
+        $daysInMonth = $this->daysInMonth($year, $month);
+        $dayOfYear = $day;
+        $julianDay = 0;
+
+        if ($day > $daysInMonth) {
+            $dayOfYear = $day - $daysInMonth;
+            $year = $month === 12 ? $year + 1 : $year;
+            $month = $month === 12 ? 1 : $month + 1;
+        }
+
+        for ($m = 1; $m < $month; $m++) {
+            $dayOfYear += $this->daysInMonth($year, $m);
+        }
+
+        $julianDay += ($year - 1) * Constants::DaysOfShiaYear;
+        $julianDay += floor(((11 * $year) + 3) / 30);
+        $julianDay += $this::ShiaEpoch - ($year === 1440 ? 2 : 1);
+        return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
+    }
+
     public function daysInMonth($year, $month)
     {
-
         $islamicDaysInMonth = array(30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29); //30
         $shiaDaysInMonthInYears = array(
             1435 => array(29, 30, 29, 30, 29, 30, 29, 30, 30, 30, 29, 30),

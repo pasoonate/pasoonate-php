@@ -6,29 +6,20 @@ class Calendar
 {
     const J1970 = 2440587.5; // Julian date at Unix epoch: 1970-01-01
     const DayInSecond = 86400;
+    protected $name = '';
 
     public function __construct()
     {
     }
 
-    public function timestampToJulianDay($timestamp)
+    public function getName()
     {
-        $julianDay =  ($timestamp / $this->DayInSecond) + $this->J1970;
-        
-        $julianDayFloatRounded = round(($julianDay - floor($julianDay)) * 10000000) / 10000000;
-
-        return floor($julianDay) + $julianDayFloatRounded;
-    }
-
-    public function julianDayToTimestamp($julianDay)
-    {
-        $timestamp = round(($julianDay - $this::J1970) * $this::DayInSecond);
-        return $timestamp;
+        return $this->name;
     }
 
     public function julianDayWithoutTime($julianDay)
     {
-        return floor($julianDay) + (($julianDay - floor($julianDay)) >= 0.5 ?  0.5 : -0.5);        
+        return floor($julianDay) + (($julianDay - floor($julianDay)) >= 0.5 ? 0.5 : -0.5);
     }
 
     public function extractJulianDayTime($julianDay)
@@ -36,7 +27,7 @@ class Calendar
         $julianDay += 0.5;
 
         // Astronomical to civil
-        $time = floor(($julianDay - floor($julianDay)) * $this::DayInSecond) + 0.5;        
+        $time = floor(($julianDay - floor($julianDay)) * $this::DayInSecond) + 0.5;
 
         $dayTime = new \stdClass();
         $dayTime->hour = floor($time / 3600);
@@ -50,13 +41,53 @@ class Calendar
         $timestamp = $this->julianDayToTimestamp($julianDay);
         $timestamp += ($hour * 3600) + ($minute * 60) + $second;
 
-        $julianDay = $this->$timestampToJulianDay($timestamp);
+        $julianDay = $this->timestampToJulianDay($timestamp);
         $julianDayFloatRounded = round(($julianDay - floor($julianDay)) * 10000000) / 10000000;
 
         return floor($julianDay) + $julianDayFloatRounded;
     }
 
-    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
+    public function julianDayToTimestamp($julianDay)
+    {
+        $timestamp = round(($julianDay - $this::J1970) * $this::DayInSecond);
+        return $timestamp;
+    }
+
+    public function timestampToJulianDay($timestamp)
+    {
+        $julianDay = ($timestamp / $this::DayInSecond) + $this::J1970;
+
+        $julianDayFloatRounded = round(($julianDay - floor($julianDay)) * 10000000) / 10000000;
+
+        return floor($julianDay) + $julianDayFloatRounded;
+    }
+
+    public function daysInMonth($year, $month)
+    {
+        return 0;
+    }
+
+    public function weekOfMonth($timestamp)
+    {
+        $currentDate = $this->timestampToDate($timestamp);
+        $firstDayOfMonthTimestamp = $this->dateToTimestamp($currentDate->year, $currentDate->month, 1, $currentDate->hour, $currentDate->minute, $currentDate->second);
+        $dayOfWeekInCurrentDayOfMonth = $this->dayOfWeek($timestamp);
+        $dayOfWeekInFirstDayOfMonth = $this->dayOfWeek($firstDayOfMonthTimestamp);
+        $week = 1;
+        if ($currentDate->day <= (7 - $dayOfWeekInFirstDayOfMonth)) {
+            return $week;
+        }
+        $week += (($currentDate->day - ((7 - $dayOfWeekInFirstDayOfMonth) + ($dayOfWeekInCurrentDayOfMonth + 1))) / 7) + 1;
+        return $week;
+    }
+
+    public function timestampToDate($timestamp)
+    {
+        $julianDay = $this->timestampToJulianDay($timestamp);
+        return $this->julianDayToDate($julianDay);
+    }
+
+    public function julianDayToDate($julianDay)
     {
         //
     }
@@ -67,21 +98,9 @@ class Calendar
         return $this->julianDayToTimestamp($julianDay);
     }
 
-    public function julianDayToDate ($julianDay)
+    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
     {
         //
-    }
-
-    public function timestampToDate($timestamp)
-    {
-        $julianDay = $this->timestampToJulianDay($timestamp);
-        return $this->julianDayToDate($julianDay);
-    }
-
-
-    public function daysInMonth($year, $month)
-    {
-        return 0;
     }
 
     public function dayOfWeek($timestamp)
@@ -90,26 +109,10 @@ class Calendar
         return $this->mod(floor($julianDay + 2.5), 7);
     }
 
-    public function dayOfYear($timestamp)
+    public function mod($a, $b)
     {
-        $currentDate = $this->timestampToDate($timestamp);
-        $firstOfYearJulianDay = $this->dateToJulianDay($currentDate->year, 1, 1, 0, 0, 0);
-        $currentJulianDay = $this->dateToJulianDay($currentDate->year, $currentDate->month, $currentDate->day, $currentDate->hour, $currentDate->minute, $currentDate->second);
-        return floor($currentJulianDay - $firstOfYearJulianDay + 1);
-    }
 
-    public function weekOfMonth($timestamp)
-    {
-        $currentDate = $this->timestampToDate($timestamp);
-        $firstDayOfMonthTimestamp = $this->dateToTimestamp($currentDate->year, $currentDate->month, 1, $currentDate->hour, $currentDate->minute, $currentDate->second);
-        $dayOfWeekInCurrentDayOfMonth = $this->dayOfWeek($timestamp);
-        $dayOfWeekInFirstDayOfMonth = $this->dayOfWeek($firstDayOfMonthTimestamp);
-        $week = 1;
-        if ($currentDate->day <= (7 - $dayOfWeekInFirstDayOfMonth) {
-            return $week;
-        }
-        $week += (($currentDate->day - ((7 - $dayOfWeekInFirstDayOfMonth) + ($dayOfWeekInCurrentDayOfMonth + 1))) / 7) + 1;
-        return $week;
+        return $a - ($b * floor($a / $b));
     }
 
     public function weekOfYear($timestamp)
@@ -127,13 +130,13 @@ class Calendar
         return $week;
     }
 
-
-    public function mod($a, $b)
+    public function dayOfYear($timestamp)
     {
-
-        return $a - ($b * floor($a / $b));
+        $currentDate = $this->timestampToDate($timestamp);
+        $firstOfYearJulianDay = $this->dateToJulianDay($currentDate->year, 1, 1, 0, 0, 0);
+        $currentJulianDay = $this->dateToJulianDay($currentDate->year, $currentDate->month, $currentDate->day, $currentDate->hour, $currentDate->minute, $currentDate->second);
+        return floor($currentJulianDay - $firstOfYearJulianDay + 1);
     }
-
 
     public function isLeap($year)
     {

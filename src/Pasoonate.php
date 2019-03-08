@@ -23,7 +23,7 @@ class Pasoonate extends Constants
         return new CalendarManager($timestamp, $timezoneOffset);
     }
 
-    public static function trans($key, $locale)
+    public static function trans($key, $locale = null)
     {
         return self::$localization->trans($key, $locale);
     }

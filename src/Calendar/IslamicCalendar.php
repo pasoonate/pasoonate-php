@@ -8,22 +8,11 @@ class IslamicCalendar extends Calendar
 
     public function __construct()
     {
-
-    }
-
-    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
-    {
-        $julianDay = $day;
-
-        $julianDay += ceil(($month - 1) * 29.5);
-        $julianDay += ($year - 1) * 354;
-        $julianDay += floor(((11 * $year) + 3) / 30);
-        $julianDay += $this::IslamicEpoch - 1;
-        return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
+        $this->name = 'islamic';
     }
 
     public function julianDayToDate($julianDay)
-    {       
+    {
         $time = $this->extractJulianDayTime($julianDay);
 
         $julianDay = $this->julianDayWithoutTime($julianDay);
@@ -43,12 +32,23 @@ class IslamicCalendar extends Calendar
         return $date;
     }
 
+    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
+    {
+        $julianDay = $day;
+
+        $julianDay += ceil(($month - 1) * 29.5);
+        $julianDay += ($year - 1) * 354;
+        $julianDay += floor(((11 * $year) + 3) / 30);
+        $julianDay += $this::IslamicEpoch - 1;
+        return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
+    }
+
     public function daysInMonth($year, $month)
     {
         $islamicDaysInMonth = array(30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29); //30
 
         if ($month < 1 || $month > 12) {
-            throw new RangeException("$month Out Of Range Exception");
+            throw new \RangeException("$month Out Of Range Exception");
         }
 
         if ($year && $this->isLeap($year) && $month == 12) {

@@ -8,18 +8,7 @@ class GregorianCalendar extends Calendar
 
     public function __construct()
     {
-
-    }
-
-    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
-    {
-        $julianDay = $this::GregorianEpoch - 1;
-        $julianDay += (365 * ($year - 1));
-        $julianDay += floor(($year - 1) / 4);
-        $julianDay += floor(($year - 1) / 100) * -1;
-        $julianDay += floor(($year - 1) / 400);
-        $julianDay += floor((((367 * $month) - 362) / 12) + (($month <= 2) ? 0 : ($this->isLeap($year) ? -1 : -2)) + $day);
-        return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);           
+        $this->name = 'gregorian';
     }
 
     public function julianDayToDate($julianDay)
@@ -57,12 +46,28 @@ class GregorianCalendar extends Calendar
         return $date;
     }
 
+    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
+    {
+        $julianDay = $this::GregorianEpoch - 1;
+        $julianDay += (365 * ($year - 1));
+        $julianDay += floor(($year - 1) / 4);
+        $julianDay += floor(($year - 1) / 100) * -1;
+        $julianDay += floor(($year - 1) / 400);
+        $julianDay += floor((((367 * $month) - 362) / 12) + (($month <= 2) ? 0 : ($this->isLeap($year) ? -1 : -2)) + $day);
+        return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
+    }
+
+    public function isLeap($year)
+    {
+        return (($year % 4) == 0) && (!((($year % 100) == 0) && (($year % 400) != 0)));
+    }
+
     public function daysInMonth($year, $month)
     {
         $gregorianDaysInMonth = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
         if ($month < 1 || $month > 12) {
-            throw new RangeException("$month Out Of Range Exception");
+            throw new \RangeException("$month Out Of Range Exception");
         }
 
         if ($year && $this->isLeap($year) && $month == 2) {
@@ -70,11 +75,6 @@ class GregorianCalendar extends Calendar
         }
 
         return $gregorianDaysInMonth[$month - 1];
-    }    
-
-    public function isLeap($year)
-    {
-        return (($year % 4) == 0) && (!((($year % 100) == 0) && (($year % 400) != 0)));        
     }
     
 }
