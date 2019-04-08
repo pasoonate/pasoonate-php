@@ -49,10 +49,15 @@ class Localization
     public function hasTransKey($key, $locale)
     {
         $subKeys = explode('.', $key);
-        if (!isset($this->_langs[$locale])) return false;
+
+        if (!isset($this->_langs[$locale])) {
+            return false;
+        }
+        
         $result = $this->_langs[$locale];
+
         for ($i = 0; $i < count($subKeys); $i++) {
-            if (in_array($result, $subKeys[$i])) {
+            if (isset($result[$subKeys[$i]])) {
                 $result = $result[$subKeys[$i]];
                 continue;
             }
