@@ -33,14 +33,14 @@ class Pasoonate extends Constants
         self::$localization->setLocale($locale);
     }
 
-    public static function getLocal()
+    public static function getLocale()
     {
-        return self::$localization->getLocal();
+        return self::$localization->getLocale();
     }
 
-    public static function isLocal($locale)
+    public static function isLocale($locale)
     {
-        return self::$localization->isLocal($locale);
+        return self::$localization->isLocale($locale);
     }
 
     public static function setFormatter($formatter)
@@ -51,3 +51,5 @@ class Pasoonate extends Constants
 
 Pasoonate::$localization = new Localization();
 Pasoonate::$formatter = new SimpleDateFormat();
+
+Pasoonate::$localization->setLang('fa', include('Lang/fa.php'));
