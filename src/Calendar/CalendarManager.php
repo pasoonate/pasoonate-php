@@ -37,39 +37,63 @@ class CalendarManager
 
     private function getDefaultTimezoneOffset($timezoneString = null)
     {
-        if (is_null($timezoneString)) $timezoneString = date_default_timezone_get();
-
+        $timezoneString = $timezoneString ?? date_default_timezone_get();
         $timezone = timezone_open($timezoneString);
+
         return timezone_offset_get($timezone, date_create());
     }
 
-    public function gregorian()
+    /**
+     * @param string $datetime
+     * 
+     * @return CalendarManager
+     */
+    public function gregorian($datetime = null)
     {
         $this->_currentCalendar = $this->_gregorian;
-        return $this;
+
+        return $this->parse($datetime);
     }
 
-    public function jalali()
+    /**
+     * @param string $datetime
+     * 
+     * @return CalendarManager
+     */
+    public function jalali($datetime = null)
     {
         $this->_currentCalendar = $this->_jalali;
-        return $this;
+
+        return $this->parse($datetime);
     }
 
-    public function islamic()
+    /**
+     * @param string $datetime
+     * 
+     * @return CalendarManager
+     */
+    public function islamic($datetime = null)
     {
         $this->_currentCalendar = $this->_islamic;
-        return $this;
+
+        return $this->parse($datetime);
     }
 
-    public function shia()
+    /**
+     * @param string $datetime
+     * 
+     * @return CalendarManager
+     */
+    public function shia($datetime = null)
     {
         $this->_currentCalendar = $this->_islamic;
-        return $this;
+
+        return $this->parse($datetime);
     }
 
     public function name()
     {
-        $this->_currentCalendar ? $this->_currentCalendar->getName() : '';
+        return $this->_currentCalendar ? $this->_currentCalendar->getName() : '';
     }
 
     public function parse($expression)
@@ -78,22 +102,22 @@ class CalendarManager
             list($date, $time) = explode(' ', $expression);
 
             if ($date) {
-                list($year, $month, $day) = explode('/[/-]/g', $date);// $date->trim()->split(/[/-]/g);
-                $this->setDate(intval($year), intval($month) || 1, intval($day) || 1);
+                list($year, $month, $day) = preg_split("/[\/-]/", $date);
+                $this->setDate(intval($year), intval($month) ?: 1, intval($day) ?: 1);
             }
 
             if ($time) {
-                list($hour, $minute, $second) = $time->trim()->split(':');
-                $this->setTime(intval($hour) || 0, intval($minute) || 0, intval($second) || 0);
+                list($hour, $minute, $second) = explode(':', $time);
+                $this->setTime(intval($hour) ?: 0, intval($minute) ?: 0, intval($second) ?: 0);
             }
         }
 
         return $this;
     }
 
-    public function format($pattern, $locale)
+    public function format($pattern, $locale = null)
     {
         $this->_formatter->setCalendar($this);
-        return $this->_formatter->format($pattern, $locale);
+        return $this->_formatter->format($pattern, $locale ?? Pasoonate::getLocale());
     }
 }
