@@ -13,7 +13,7 @@ class DateFormat
     	$this->_calendar = null;
     }
 
-	public function format()
+	public function format($pattern, $locale)
 	{
 		if($this->getCalendar() === null) {
 			return "";
