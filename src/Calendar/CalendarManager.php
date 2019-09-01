@@ -9,31 +9,18 @@ use Pasoonate\Traits\DifferenceMethodsTrait;
 
 class CalendarManager
 {
-    protected $_timezoneOffset;
-    private $_gregorian;
-    private $_jalali;
-    private $_islamic;
-    private $_shia;
-    private $_currentCalendar;
-    private $_formatter;
-    private $_timestamp;
-
     use BaseMethodsTrait;
     use AdditionAndSubstractionTrait;
     use DifferenceMethodsTrait;
 
-    public function __construct($timestamp, $timezoneOffset)
-    {
-        $this->_gregorian = new GregorianCalendar();
-        $this->_jalali = new JalaliCalendar();
-        $this->_islamic = new IslamicCalendar();
-        $this->_shia = new ShiaCalendar();
-        $this->_currentCalendar = null;
-        $this->_formatter = Pasoonate::$formatter;
-
-        $this->_timestamp = !is_null($timestamp) ? $timestamp : time();
-        $this->_timezoneOffset = !is_null($timezoneOffset) && !is_string($timezoneOffset) ? $timezoneOffset : $this->getDefaultTimezoneOffset($timezoneOffset);
-    }
+    private $gregorian;
+    private $jalali;
+    private $islamic;
+    private $shia;
+    private $currentCalendar;
+    private $formatter;
+    private $timestamp;
+    private $timezoneOffset;
 
     private function getDefaultTimezoneOffset($timezoneString = null)
     {
@@ -43,6 +30,19 @@ class CalendarManager
         return timezone_offset_get($timezone, date_create());
     }
 
+    public function __construct($timestamp, $timezoneOffset)
+    {
+        $this->gregorian = new GregorianCalendar();
+        $this->jalali = new JalaliCalendar();
+        $this->islamic = new IslamicCalendar();
+        $this->shia = new ShiaCalendar();
+        $this->currentCalendar = null;
+        $this->formatter = Pasoonate::$formatter;
+
+        $this->timestamp = $timestamp ?? time();
+        $this->timezoneOffset = is_null($timezoneOffset) && is_string($timezoneOffset) ? $this->getDefaultTimezoneOffset($timezoneOffset) : $timezoneOffset;
+    }  
+
     /**
      * @param string $datetime
      * 
@@ -50,7 +50,7 @@ class CalendarManager
      */
     public function gregorian($datetime = null)
     {
-        $this->_currentCalendar = $this->_gregorian;
+        $this->currentCalendar = $this->gregorian;
 
         return $this->parse($datetime);
     }
@@ -62,7 +62,7 @@ class CalendarManager
      */
     public function jalali($datetime = null)
     {
-        $this->_currentCalendar = $this->_jalali;
+        $this->currentCalendar = $this->jalali;
 
         return $this->parse($datetime);
     }
@@ -74,7 +74,7 @@ class CalendarManager
      */
     public function islamic($datetime = null)
     {
-        $this->_currentCalendar = $this->_islamic;
+        $this->currentCalendar = $this->islamic;
 
         return $this->parse($datetime);
     }
@@ -86,19 +86,30 @@ class CalendarManager
      */
     public function shia($datetime = null)
     {
-        $this->_currentCalendar = $this->_islamic;
+        $this->currentCalendar = $this->shia;
 
         return $this->parse($datetime);
     }
 
-    public function name()
+    public function name($calendar = null)
     {
-        return $this->_currentCalendar ? $this->_currentCalendar->getName() : '';
+        if($calendar) {
+            $calendar = strtolower($calendar);
+            $instance = $this->$calendar ?? null;
+
+            if($instance) {
+                $this->currentCalendar = $instance;
+            }
+
+            return;
+        }
+
+        return $this->currentCalendar ? $this->currentCalendar->getName() : '';
     }
 
     public function parse($expression)
     {
-        if ($this->_currentCalendar && $expression) {
+        if ($this->currentCalendar && $expression) {
             list($date, $time) = explode(' ', $expression);
 
             if ($date) {
@@ -117,7 +128,13 @@ class CalendarManager
 
     public function format($pattern, $locale = null)
     {
-        $this->_formatter->setCalendar($this);
-        return $this->_formatter->format($pattern, $locale ?? Pasoonate::getLocale());
+        $this->formatter->setCalendar($this);
+
+        return $this->formatter->format($pattern, $locale ?? Pasoonate::getLocale());
+    }
+
+    public function clone()
+    {
+        return Pasoonate::make($this->getTimestamp(), $this->getTimezoneOffset());
     }
 }
