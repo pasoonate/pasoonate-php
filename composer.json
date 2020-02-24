@@ -14,13 +14,17 @@
     {
       "name": "Mahdi Bagheri",
       "email": "mb.programmer@yahoo.com"
+    },
+    {
+      "name": "Majid Ataee",
+      "email": "ataiemajid_63@hotmail.com"
     }
   ],
   "require": {
-    "php": ">=5.4"
+    "php": ">=7.2"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.2.*"
+    "phpunit/phpunit": "^8"
   },
   "autoload": {
     "psr-4": {
