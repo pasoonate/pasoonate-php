@@ -5,18 +5,13 @@ namespace Pasoonate;
 class Constants
 {
 	const J1970 = 2440587.5; // Julian date at Unix epoch: 1970-01-01
-	const DayInSecond = 86400;
-	const ShiaEpoch = 1948439.5;
-	const JalaliEpoch = 1948320.5;
-	const GregorianEpoch = 1721425.5;
-	const IslamicEpoch = 1948439.5;
-	const DaysOfIslamicYear = 354;
-	const DaysOfShiaYear = 354;
-	const DaysOfJalaliYear = 365;
-	const DaysOfGregorianYear = 365;
-
-    public function __construct()
-    {
-
-    }
+	const DAY_IN_SECOND = 86400;
+	const SHIA_EPOCH = 1948439.5;
+	const JALALI_EPOCH = 1948320.5;
+	const GREGORIAN_EPOCH = 1721425.5;
+	const ISLAMIC_EPOCH = 1948439.5;
+	const DAYS_OF_ISLAMIC_YEAR = 354;
+	const DAYS_OF_SHIA_YEAR = 354;
+	const DAYS_OF_JALALI_YEAR = 365;
+	const DAYS_OF_GREGORIAN_YEAR = 365;
 }
