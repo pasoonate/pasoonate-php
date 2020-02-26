@@ -2,13 +2,15 @@
 
 namespace Pasoonate\Calendar;
 
+use OutOfRangeException;
+use Pasoonate\Constants;
+use Pasoonate\DateTime;
+
 class IslamicCalendar extends Calendar
 {
-    const IslamicEpoch = 1948439.5;
-
     public function __construct()
     {
-        $this->name = 'islamic';
+        parent::__construct('islamic');
     }
 
     public function julianDayToDate($julianDay)
@@ -18,18 +20,13 @@ class IslamicCalendar extends Calendar
         $julianDay = $this->julianDayWithoutTime($julianDay);
         $julianDay = floor($julianDay) + 0.5;
 
-        $year = floor(((($julianDay - $this::IslamicEpoch) * 30) + 10646) / 10631);
+        $year = floor(((($julianDay - Constants::ISLAMIC_EPOCH) * 30) + 10646) / 10631);
         $month = min(12, ceil(($julianDay - (29 + $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second)))) / 29.5) + 1);
-        $day = $julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second)) + 1;
+        $day = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second))) + 1;
 
-        $date = new \stdClass();
-        $date->year = $year;
-        $date->month = $month;
-        $date->day = $day;
-        $date->hour = $time->hour;
-        $date->minute = $time->minute;
-        $date->second = $time->second;
-        return $date;
+        $datetime = new DateTime($year, $month, $day, $time->hour, $time->minute, $time->second);
+
+        return $datetime;
     }
 
     public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
@@ -39,7 +36,8 @@ class IslamicCalendar extends Calendar
         $julianDay += ceil(($month - 1) * 29.5);
         $julianDay += ($year - 1) * 354;
         $julianDay += floor(((11 * $year) + 3) / 30);
-        $julianDay += $this::IslamicEpoch - 1;
+        $julianDay += Constants::ISLAMIC_EPOCH - 1;
+        
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
 
@@ -48,7 +46,7 @@ class IslamicCalendar extends Calendar
         $islamicDaysInMonth = array(30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29); //30
 
         if ($month < 1 || $month > 12) {
-            throw new \RangeException("$month Out Of Range Exception");
+            throw new OutOfRangeException("$month Out Of Range Exception");
         }
 
         if ($year && $this->isLeap($year) && $month == 12) {
@@ -61,6 +59,7 @@ class IslamicCalendar extends Calendar
     public function isLeap($year)
     {
         $isLeap = ((($year * 11) + 14) % 30) < 11;
+
         return $isLeap;
     }
 }

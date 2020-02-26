@@ -2,13 +2,15 @@
 
 namespace Pasoonate\Calendar;
 
+use OutOfRangeException;
+use Pasoonate\Constants;
+use Pasoonate\DateTime;
+
 class JalaliCalendar extends Calendar
 {
-    const JalaliEpoch = 1948320.5;
-
     public function __construct()
     {
-        $this->name = 'jalali';
+        parent::__construct('jalali');
     }
 
     public function julianDayToDate($julianDay)
@@ -40,18 +42,13 @@ class JalaliCalendar extends Calendar
             $year--;
         }
 
-        $yday = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second)) + 1);
+        $yday = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second))) + 1;
         $month = ($yday <= 186) ? ceil($yday / 31) : ceil(($yday - 6) / 30);
         $day = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second))) + 1;
 
-        $date = new \stdClass();
-        $date->year = $year;
-        $date->month = $month;
-        $date->day = $day;
-        $date->hour = $time->hour;
-        $date->minute = $time->minute;
-        $date->second = $time->second;
-        return $date;
+        $datetime = new DateTime($year, $month, $day, $time->hour, $time->minute, $time->second);
+
+        return $datetime;
     }
 
     public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
@@ -64,7 +61,7 @@ class JalaliCalendar extends Calendar
         $julianDay += floor((($epochYear * 682) - 110) / 2816);
         $julianDay += ($epochYear - 1) * 365;
         $julianDay += floor($epochBase / 2820) * 1029983;
-        $julianDay += $this::JalaliEpoch - 1;
+        $julianDay += Constants::JALALI_EPOCH - 1;
 
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
@@ -74,7 +71,7 @@ class JalaliCalendar extends Calendar
         $gregorianDaysInMonth = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29); //30
 
         if ($month < 1 || $month > 12) {
-            throw new RangeException("$month Out Of Range Exception");
+            throw new OutOfRangeException("$month Out Of Range Exception");
         }
 
         if ($year && $this->isLeap($year) && $month == 12) {

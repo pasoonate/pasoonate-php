@@ -2,13 +2,15 @@
 
 namespace Pasoonate\Calendar;
 
+use OutOfRangeException;
+use Pasoonate\Constants;
+use Pasoonate\DateTime;
+
 class ShiaCalendar extends Calendar
 {
-    const ShiaEpoch = 1948439.5;
-
     public function __construct()
     {
-        $this->name = 'shia';
+        parent::__construct('shia');
     }
 
     public function julianDayToDate($julianDay)
@@ -17,30 +19,26 @@ class ShiaCalendar extends Calendar
 
         $julianDay = $this->julianDayWithoutTime($julianDay);
 
-        $year = floor(((($julianDay - $this::ShiaEpoch) * 30) + 10646) / 10631);
+        $year = floor(((($julianDay - Constants::SHIA_EPOCH) * 30) + 10646) / 10631);
         $month = min(12, ceil(($julianDay - (29 + $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second)))) / 29.5) + 1);
         $dayOfYear = $julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year -1, 12, $this->daysInMonth($year - 1, 12), $time->hour, $time->minute, $time->second));
         $days = 0;
 
         for ($i = 1; $i <= 12; $i++) {
             $days += $this->daysInMonth($year, $i);
+
             if ($dayOfYear <= $days) {
                 $month = $i;
                 break;
             }
         }
 
-        //$day = ($julianDay - (($days - $this->daysInMonth($year, $month)) + (($year - 1) * 354) + floor((3 + (11 * $year)) / 30) + $this::ShiaEpoch) + 1);
+        //$day = ($julianDay - (($days - $this->daysInMonth($year, $month)) + (($year - 1) * 354) + floor((3 + (11 * $year)) / 30) + Constants::SHIA_EPOCH) + 1);
         $day = $dayOfYear - ($days - $this->daysInMonth($year, $month));
 
-        $date = new \stdClass();
-        $date->year = $year;
-        $date->month = $month;
-        $date->day = $day;
-        $date->hour = $time->hour;
-        $date->minute = $time->minute;
-        $date->second = $time->second;
-        return $date;
+        $datetime = new DateTime($year, $month, $day, $time->hour, $time->minute, $time->second);
+
+        return $datetime;;
     }
 
     public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
@@ -59,9 +57,11 @@ class ShiaCalendar extends Calendar
             $dayOfYear += $this->daysInMonth($year, $m);
         }
 
-        $julianDay += ($year - 1) * Constants::DaysOfShiaYear;
+        $julianDay += $dayOfYear;
+        $julianDay += ($year - 1) * Constants::DAYS_OF_SHIA_YEAR;
         $julianDay += floor(((11 * $year) + 3) / 30);
-        $julianDay += $this::ShiaEpoch - ($year === 1440 ? 2 : 1);
+        $julianDay += Constants::SHIA_EPOCH - ($year === 1440 ? 2 : 1);
+        
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
 
@@ -79,7 +79,7 @@ class ShiaCalendar extends Calendar
         ];        
     
         if ($month < 1 || $month > 12) {
-            throw new \RangeException("$month Out Of Range Exception");
+            throw new OutOfRangeException("$month Out Of Range Exception");
         }
 
         if (!isset($shiaDaysInMonthInYears[$year])) {
@@ -92,6 +92,7 @@ class ShiaCalendar extends Calendar
     public function isLeap($year)
     {
         $isLeap = ((($year * 11) + 14) % 30) < 11;
+        
         return $isLeap;
     }
 }
