@@ -127,15 +127,26 @@ class CalendarManager
     public function parse($expression)
     {
         if ($this->currentCalendar && $expression) {
-            list($date, $time) = explode(' ', $expression);
+            $datetime = explode(' ', $expression);
+
+            $date = $datetime[0] ?? null;
+            $time = $datetime[1] ?? null;
 
             if ($date) {
-                list($year, $month, $day) = preg_split("/[\/-]/", $date);
+                $date = preg_split("/[\/-]/", $date);
+                $year = $date[0] ?? 1;
+                $month = $date[1] ?? 1;
+                $day = $date[2] ?? 1;
+                
                 $this->setDate(intval($year), intval($month) ?: 1, intval($day) ?: 1);
             }
 
             if ($time) {
-                list($hour, $minute, $second) = explode(':', $time);
+                $time = explode(':', $time);
+                $hour = $time[0] ?? 0;
+                $minute = $time[1] ?? 0;
+                $second = $time[2] ?? 0;
+
                 $this->setTime(intval($hour) ?: 0, intval($minute) ?: 0, intval($second) ?: 0);
             }
         }
