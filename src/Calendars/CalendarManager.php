@@ -1,18 +1,20 @@
 <?php
 
-namespace Pasoonate\Calendar;
+namespace Pasoonate\Calendars;
 
-use Pasoonate\Formatter\DateFormat;
+use Pasoonate\Formatters\DateFormat;
 use Pasoonate\Pasoonate;
-use Pasoonate\Traits\AdditionAndSubstractionTrait;
-use Pasoonate\Traits\BaseMethodsTrait;
-use Pasoonate\Traits\DifferenceMethodsTrait;
+use Pasoonate\Traits\AdditionAndSubstraction;
+use Pasoonate\Traits\Base;
+use Pasoonate\Traits\Comparison;
+use Pasoonate\Traits\Difference;
 
 class CalendarManager
 {
-    use BaseMethodsTrait;
-    use AdditionAndSubstractionTrait;
-    use DifferenceMethodsTrait;
+    use Base;
+    use AdditionAndSubstraction;
+    use Difference;
+    use Comparison;
 
     /**
      * @var GregorianCalendar $gregorian

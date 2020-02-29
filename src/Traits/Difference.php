@@ -2,7 +2,7 @@
 
 namespace Pasoonate\Traits;
 
-trait DifferenceMethodsTrait
+trait Difference
 {
     public function diff($secondInstance)
     {

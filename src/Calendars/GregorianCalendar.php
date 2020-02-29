@@ -1,6 +1,6 @@
 <?php
 
-namespace Pasoonate\Calendar;
+namespace Pasoonate\Calendars;
 
 use OutOfRangeException;
 use Pasoonate\Constants;
