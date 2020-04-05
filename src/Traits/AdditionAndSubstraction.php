@@ -29,7 +29,7 @@ trait AdditionAndSubstraction
 
     public function addDay($count)
     {
-        $this->timestamp = $this->timestamp + ($count * Constants::DAY_IN_SECOND);
+        $this->timestamp = $this->timestamp + ($count * Constants::DAY_IN_SECONDS);
 
         return $this;
     }

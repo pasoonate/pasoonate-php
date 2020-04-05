@@ -36,7 +36,7 @@ abstract class Calendar
      */
     final public function timestampToJulianDay($timestamp)
     {
-        $julianDay = ($timestamp / Constants::DAY_IN_SECOND) + Constants::J1970;
+        $julianDay = ($timestamp / Constants::DAY_IN_SECONDS) + Constants::J1970;
 
         $julianDayFloatRounded = round(($julianDay - floor($julianDay)) * 10000000) / 10000000;
 
@@ -50,7 +50,7 @@ abstract class Calendar
      */
     final public function julianDayToTimestamp($julianDay)
     {
-        $timestamp = round(($julianDay - Constants::J1970) * Constants::DAY_IN_SECOND);
+        $timestamp = round(($julianDay - Constants::J1970) * Constants::DAY_IN_SECONDS);
         
         return $timestamp;
     }
@@ -75,9 +75,9 @@ abstract class Calendar
         $julianDay += 0.5;
 
         // Astronomical to civil
-        $time = floor(($julianDay - floor($julianDay)) * Constants::DAY_IN_SECOND);
+        $time = floor(($julianDay - floor($julianDay)) * Constants::DAY_IN_SECONDS);
 
-        return new Time(floor($time / 3600), floor(($time / 60) % 60), floor($time % 60));
+        return new Time(floor($time / Constants::HOUR_IN_SECONDS), floor(($time / Constants::MINUTES_PER_HOUR) % Constants::SECONDS_PER_MINUTE), floor($time % Constants::SECONDS_PER_MINUTE));
     }
 
     /**
@@ -91,7 +91,7 @@ abstract class Calendar
     final public function addTimeToJulianDay($julianDay, $hour, $minute, $second)
     {
         $timestamp = $this->julianDayToTimestamp($julianDay);
-        $timestamp += ($hour * 3600) + ($minute * 60) + $second;
+        $timestamp += ($hour * Constants::HOUR_IN_SECONDS) + ($minute * Constants::MINUTES_PER_HOUR) + $second;
 
         $julianDay = $this->timestampToJulianDay($timestamp);
         $julianDayFloatRounded = round(($julianDay - floor($julianDay)) * 10000000) / 10000000;
@@ -164,7 +164,7 @@ abstract class Calendar
     {
         $julianDay = $this->timestampToJulianDay($timestamp);
 
-        return $this->mod(floor($julianDay + 2.5), 7);
+        return $this->mod(floor($julianDay + 2.5), Constants::DAYS_PER_WEEK);
     }
 
     /**
@@ -194,11 +194,11 @@ abstract class Calendar
         $dayOfWeekInFirstDayOfMonth = $this->dayOfWeek($firstDayOfMonthTimestamp);
         $week = 1;
         
-        if ($currentDate->day <= (7 - $dayOfWeekInFirstDayOfMonth)) {
+        if ($currentDate->day <= (Constants::DAYS_PER_WEEK - $dayOfWeekInFirstDayOfMonth)) {
             return $week;
         }
 
-        $week += (($currentDate->day - ((7 - $dayOfWeekInFirstDayOfMonth) + ($dayOfWeekInCurrentDayOfMonth + 1))) / 7) + 1;
+        $week += (($currentDate->day - ((Constants::DAYS_PER_WEEK - $dayOfWeekInFirstDayOfMonth) + ($dayOfWeekInCurrentDayOfMonth + 1))) / 7) + 1;
         
         return $week;
     }
@@ -217,11 +217,11 @@ abstract class Calendar
         $dayOfWeekInFirstDayOfYear = $this->dayOfWeek($firstDayOfYearTimestamp);
         $week = 1;
 
-        if ($dayOfYear <= (7 - $dayOfWeekInFirstDayOfYear)) {
+        if ($dayOfYear <= (Constants::DAYS_PER_WEEK - $dayOfWeekInFirstDayOfYear)) {
             return $week;
         }
 
-        $week += (($dayOfYear - ((7 - $dayOfWeekInFirstDayOfYear) + ($dayOfWeekInCurrentDayOfYear + 1))) / 7) + 1;
+        $week += (($dayOfYear - ((Constants::DAYS_PER_WEEK - $dayOfWeekInFirstDayOfYear) + ($dayOfWeekInCurrentDayOfYear + 1))) / Constants::DAYS_PER_WEEK) + 1;
         
         return $week;
     }

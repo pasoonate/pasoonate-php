@@ -3,7 +3,7 @@
 namespace Pasoonate\Traits;
 
 use Pasoonate\Calendars\CalendarManager;
-use Pasoonate\Pasoonate;
+use Pasoonate\Constants;
 
 trait Comparison
 {
@@ -94,7 +94,7 @@ trait Comparison
      */
     public function isWeekday () 
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) !== 7;
+        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) !== Constants::FRIDAY;
     }
 
     /**
@@ -103,7 +103,7 @@ trait Comparison
      */
     public function isWeekend () 
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === 7;
+        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::FRIDAY;
     }
 
     /**
@@ -112,7 +112,7 @@ trait Comparison
      */
     public function isSaturday () 
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === 1;
+        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::SATURDAY;
     }
     
     /**
@@ -121,7 +121,7 @@ trait Comparison
      */
     public function isSunday () 
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === 2;
+        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::SUNDAY;
     }
     
     /**
@@ -130,7 +130,7 @@ trait Comparison
      */
     public function isMonday () 
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === 3;
+        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::MONDAY;
     }
     
     /**
@@ -139,7 +139,7 @@ trait Comparison
      */
     public function isTuesday () 
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === 4;
+        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::TUESDAY;
     }
     
     /**
@@ -148,7 +148,7 @@ trait Comparison
      */
     public function isWednesday () 
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === 5;
+        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::WEDNESDAY;
     }
     
     /**
@@ -157,7 +157,7 @@ trait Comparison
      */
     public function isThursday () 
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === 6;
+        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::THURSDAY;
     }
     
     /**
@@ -166,7 +166,7 @@ trait Comparison
      */
     public function isFriday () 
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === 7;
+        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::FRIDAY;
     }
 
     /**
