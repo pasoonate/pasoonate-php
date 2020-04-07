@@ -8,6 +8,7 @@ use Pasoonate\Traits\AdditionAndSubstraction;
 use Pasoonate\Traits\Base;
 use Pasoonate\Traits\Comparison;
 use Pasoonate\Traits\Difference;
+use Pasoonate\Traits\Modifiers;
 
 class CalendarManager
 {
@@ -15,6 +16,7 @@ class CalendarManager
     use AdditionAndSubstraction;
     use Difference;
     use Comparison;
+    use Modifiers;
 
     /**
      * @var GregorianCalendar $gregorian
