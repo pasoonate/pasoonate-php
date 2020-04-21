@@ -1,3 +1,6 @@
 PHP version of Pasoon Date Library
 =========================
-All credit goes to [Majid Ataee](https://github.com/ataiemajid63/pasoonate-js/)
+
+PHP version is compatible with js version
+
+Check js project for documentation [Pasoonate-js](https://github.com/pasoonate/pasoonate-js)
