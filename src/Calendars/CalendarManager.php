@@ -45,7 +45,7 @@ class CalendarManager
         $this->formatter = Pasoonate::$formatter;
 
         $this->timestamp = $timestamp ?? time();
-        $this->timezoneOffset = is_null($timezoneOffset) && is_string($timezoneOffset) ? $this->getDefaultTimezoneOffset($timezoneOffset) : $timezoneOffset;
+        $this->timezoneOffset = (is_null($timezoneOffset) || is_string($timezoneOffset)) ? $this->getDefaultTimezoneOffset($timezoneOffset) : $timezoneOffset;
     }  
 
     /**

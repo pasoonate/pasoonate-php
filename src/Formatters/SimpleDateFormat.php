@@ -76,10 +76,10 @@ class SimpleDateFormat extends DateFormat
                     $categories[$key] = $this->getCalendar()->getMonth();
                 break;
                 case self::FULL_DAY_NAME:
-                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.day_name.{$this->getCalendar()->getDay()}");
+                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.day_name.{$this->getCalendar()->dayOfWeek()}");
                 break;
                 case self::SHORT_DAY_NAME:
-                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.short_day_name.{$this->getCalendar()->getDay()}");
+                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.short_day_name.{$this->getCalendar()->dayOfWeek()}");
                 break;
                 case self::FULL_DAY:
                     $categories[$key] = $this->getCalendar()->getDay() > 9 ? $this->getCalendar()->getDay() : "0{$this->getCalendar()->getDay()}";
