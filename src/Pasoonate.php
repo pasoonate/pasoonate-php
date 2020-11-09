@@ -5,6 +5,8 @@ namespace Pasoonate;
 use Pasoonate\Calendars\CalendarManager;
 use Pasoonate\Formatters\DateFormat;
 use Pasoonate\Formatters\SimpleDateFormat;
+use Pasoonate\Parsers\Parser;
+use Pasoonate\Parsers\SimpleParser;
 
 class Pasoonate extends Constants
 {
@@ -17,6 +19,11 @@ class Pasoonate extends Constants
      * @var DateFormat
      */
     public static $formatter;
+
+    /**
+     * @var Parser
+     */
+    public static $parser;
 
     /**
      * @param int|null $timestamp
@@ -58,6 +65,14 @@ class Pasoonate extends Constants
     }
 
     /**
+     * @param Parser $parser
+     */
+    public static function setParser($parser)
+    {
+        Pasoonate::$parser = $parser instanceof Parser ? $parser : new SimpleParser();
+    }
+
+    /**
      * @param CalendarManager $instance
      * 
      * @return CalendarManager
@@ -70,5 +85,6 @@ class Pasoonate extends Constants
 
 Pasoonate::$localization = new Localization();
 Pasoonate::$formatter = new SimpleDateFormat();
+Pasoonate::$parser = new SimpleParser();
 
 Pasoonate::$localization->setLang('fa', include('Lang/fa.php'));

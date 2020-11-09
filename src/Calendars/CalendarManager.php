@@ -3,6 +3,7 @@
 namespace Pasoonate\Calendars;
 
 use Pasoonate\Formatters\DateFormat;
+use Pasoonate\Parsers\Parser;
 use Pasoonate\Pasoonate;
 use Pasoonate\Traits\AdditionAndSubstraction;
 use Pasoonate\Traits\Base;
@@ -25,6 +26,7 @@ class CalendarManager
      * @var ShiaCalendar $shia
      * @var Calendar $currentCalendar
      * @var DateFormat $formatter
+     * @var Parser $parser
      */
     private $gregorian;
     private $jalali;
@@ -32,6 +34,7 @@ class CalendarManager
     private $shia;
     private $currentCalendar;
     private $formatter;
+    private $parser;
     private $timestamp;
     private $timezoneOffset;
 
@@ -43,6 +46,7 @@ class CalendarManager
         $this->shia = new ShiaCalendar();
         $this->currentCalendar = null;
         $this->formatter = Pasoonate::$formatter;
+        $this->parser = Pasoonate::$parser;
 
         $this->timestamp = $timestamp ?? time();
         $this->timezoneOffset = (is_null($timezoneOffset) || is_string($timezoneOffset)) ? $this->getDefaultTimezoneOffset($timezoneOffset) : $timezoneOffset;
@@ -56,7 +60,10 @@ class CalendarManager
     public function gregorian($datetime = null)
     {
         $this->currentCalendar = $this->gregorian;
-        $this->parse($datetime);
+        
+        if($datetime) {
+            $this->parse('yyyy-MM-dd HH:mm:ss', $datetime);
+        }
 
         return $this;
     }
@@ -69,7 +76,10 @@ class CalendarManager
     public function jalali($datetime = null)
     {
         $this->currentCalendar = $this->jalali;
-        $this->parse($datetime);
+
+        if($datetime) {
+            $this->parse('yyyy/MM/dd HH:mm:ss', $datetime);
+        }
         
         return $this;
     }
@@ -82,7 +92,10 @@ class CalendarManager
     public function islamic($datetime = null)
     {
         $this->currentCalendar = $this->islamic;
-        $this->parse($datetime);
+
+        if($datetime) {
+            $this->parse('yyyy-MM-dd HH:mm:ss', $datetime);
+        }
 
         return $this;
     }
@@ -95,7 +108,10 @@ class CalendarManager
     public function shia($datetime = null)
     {
         $this->currentCalendar = $this->shia;
-        $this->parse($datetime);
+
+        if($datetime) {
+            $this->parse('yyyy-MM-dd HH:mm:ss', $datetime);
+        }
 
         return $this;
     }
@@ -122,36 +138,16 @@ class CalendarManager
     }
 
     /**
-     * @param string $expression
+     * @param string $pattern
+     * @param string $text
      * 
      * @return CalendarManager
      */
-    public function parse($expression)
+    public function parse($pattern, $text)
     {
-        if ($this->currentCalendar && $expression) {
-            $datetime = explode(' ', $expression);
+        $this->parser->setCalendar($this);
 
-            $date = $datetime[0] ?? null;
-            $time = $datetime[1] ?? null;
-
-            if ($date) {
-                $date = preg_split("/[\/-]/", $date);
-                $year = $date[0] ?? 1;
-                $month = $date[1] ?? 1;
-                $day = $date[2] ?? 1;
-                
-                $this->setDate(intval($year), intval($month) ?: 1, intval($day) ?: 1);
-            }
-
-            if ($time) {
-                $time = explode(':', $time);
-                $hour = $time[0] ?? 0;
-                $minute = $time[1] ?? 0;
-                $second = $time[2] ?? 0;
-
-                $this->setTime(intval($hour) ?: 0, intval($minute) ?: 0, intval($second) ?: 0);
-            }
-        }
+        $this->parser->parse($pattern, $text);
 
         return $this;
     }
