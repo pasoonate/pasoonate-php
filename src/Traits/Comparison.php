@@ -230,7 +230,7 @@ trait Comparison
      */
     public function isLeapYear () 
     {
-        return $this->currentCalendar->isLeap($this->currentCalendar->getYear());
+        return $this->currentCalendar->isLeap($this->getYear());
     }
 
     /**
