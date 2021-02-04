@@ -2,6 +2,9 @@
 
 namespace Pasoonate\Traits;
 
+use Pasoonate\Date;
+use Pasoonate\Time;
+
 trait Base
 {
     public function setTimestamp($timestamp)
@@ -58,7 +61,7 @@ trait Base
 
     public function getJulianDayNumber()
     {
-        return $this->currentCalendar->dateToJulianDay($this->getYear(), $this->getMonth(),$this->getDay(), $this->getHour(), $this->getMinute(), $this->getSecond());
+        return $this->currentCalendar->dateToJulianDay($this->getYear(), $this->getMonth(), $this->getDay(), $this->getHour(), $this->getMinute(), $this->getSecond());
     }
 
     public function setMonth($month)
@@ -240,6 +243,12 @@ trait Base
         return $this;
     }
 
+    public function getDate()
+    {
+        $datetime = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
+        return new Date($datetime->year, $datetime->month, $datetime->day);
+    }
+
     public function setTime($hour, $minute, $second)
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
@@ -249,6 +258,12 @@ trait Base
         return $this;
     }
 
+    public function getTime()
+    {
+        $datetime = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
+        return new Time($datetime->hour, $datetime->minute, $datetime->second);
+    }
+
     public function setDateTime($year, $month, $day, $hour, $minute, $second)
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
@@ -256,6 +271,11 @@ trait Base
         $this->timestamp = $timestamp - $this->timezoneOffset;
 
         return $this;
+    }
+
+    public function getDateTime()
+    {
+        return $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
     }
 
     public function setUTCDate($year, $month, $day)
@@ -278,7 +298,7 @@ trait Base
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp);
         $this->timestamp = $this->currentCalendar->dateToTimestamp($year, $month, $day, $hour, $minute, $second);
-        
+
         return $this;
     }
 
