@@ -29,13 +29,22 @@ class GregorianCalendar extends Calendar
         $dquad = $this->mod($dcent, 1461);
         $yindex = floor($dquad / 365);
         $year = ($quadricent * 400) + ($cent * 100) + ($quad * 4) + $yindex;
-        
+
         if (!(($cent == 4) || ($yindex == 4))) {
             $year++;
         }
 
         $yearday = $wjd - $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second));
-        $leapadj = ($wjd < $this->julianDayWithoutTime($this->dateToJulianDay($year, 3, 1, $time->hour, $time->minute, $time->second))) ? 0 : ($this->isLeap($year)) ? 1 : 2;
+
+        // changed this sentence because of a deprecation on php7.4
+        //$leapadj = ($wjd < $this->julianDayWithoutTime($this->dateToJulianDay($year, 3, 1, $time->hour, $time->minute, $time->second))) ? 0 : ($this->isLeap($year)) ? 1 : 2;
+        if ($wjd < $this->julianDayWithoutTime($this->dateToJulianDay($year, 3, 1, $time->hour, $time->minute, $time->second))) {
+            $leapadj = 0;
+        } else {
+            $leapadj = ($this->isLeap($year)) ? 1 : 2;
+        }
+
+
         $month = floor(((($yearday + $leapadj) * 12) + 373) / 367);
         $day = $wjd - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second)) + 1;
 
@@ -53,7 +62,7 @@ class GregorianCalendar extends Calendar
         $julianDay += floor(($year - 1) / 100) * -1;
         $julianDay += floor(($year - 1) / 400);
         $julianDay += floor((((367 * $month) - 362) / 12) + (($month <= 2) ? 0 : ($this->isLeap($year) ? -1 : -2)) + $day);
-        
+
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
 
