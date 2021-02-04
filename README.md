@@ -12,3 +12,12 @@ You can install the package via composer:
 ```bash
 composer require pasoonate/pasoonate-php
 ```
+
+## Running tests
+
+```bash
+composer install
+./vendor/bin/phpunit tests
+```
+
+
