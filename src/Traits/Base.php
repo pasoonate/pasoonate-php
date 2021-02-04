@@ -44,6 +44,23 @@ trait Base
         return $date->year;
     }
 
+    public function setJulianDayNumber($julianDay)
+    {
+        $datetime = $this->currentCalendar->julianDayToDate($julianDay);
+        $this->setYear($datetime->year);
+        $this->setMonth($datetime->month);
+        $this->setDay($datetime->day);
+        $this->setHour($datetime->hour);
+        $this->setMinute($datetime->minute);
+        $this->setSecond($datetime->second);
+        return $this;
+    }
+
+    public function getJulianDayNumber()
+    {
+        return $this->currentCalendar->dateToJulianDay($this->getYear(), $this->getMonth(),$this->getDay(), $this->getHour(), $this->getMinute(), $this->getSecond());
+    }
+
     public function setMonth($month)
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
