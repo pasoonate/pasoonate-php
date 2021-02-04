@@ -9,11 +9,15 @@ class CalendarTest extends TestCase
     {
         $pasoonate = Pasoonate::make();
 
-        $this->assertTrue($pasoonate->jalali()->setDate(1399,11,10)->isFriday());
+        $this->assertEquals($pasoonate->jalali('1398/12/10')->format('yyyy/MM/dd'), '1398/12/10', 'Jalali Date is ok');
 
         $this->assertTrue($pasoonate->jalali()->setDate(1399,1,1)->isLeapYear());
 
-        $this->assertEquals($pasoonate->jalali('1398/12/10')->format('yyyy/MM/dd'), '1398/12/10', 'Jalali Date is ok');
+        $this->assertTrue($pasoonate->jalali()->setDate(1399,11,17)->isFriday());
+
+        $this->assertTrue($pasoonate->jalali()->setDate(1399,11,11)->dayOfWeek() === 0);
+
+        $this->assertTrue($pasoonate->jalali()->setDate(1399,1,11)->dayOfYear() === 11);
     }
 
     public function testGregorianDateTime()
