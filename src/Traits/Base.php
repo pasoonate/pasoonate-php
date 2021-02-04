@@ -284,4 +284,9 @@ trait Base
     {
         return $this->currentCalendar->weekOfYear($this->timestamp + $this->timezoneOffset);
     }
+
+    public function daysInMonth()
+    {
+        return $this->currentCalendar->daysInMonth($this->getYear(), $this->getMonth());
+    }
 }

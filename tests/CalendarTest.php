@@ -18,6 +18,8 @@ class CalendarTest extends TestCase
         $this->assertTrue($pasoonate->jalali()->setDate(1399,11,11)->dayOfWeek() === 0);
 
         $this->assertTrue($pasoonate->jalali()->setDate(1399,1,11)->dayOfYear() === 11);
+
+        $this->assertTrue($pasoonate->jalali()->setDate(1399,12,11)->daysInMonth() === 30);
     }
 
     public function testGregorianDateTime()
