@@ -15,8 +15,8 @@ class Date
      */
     public function __construct($year = 0, $month = 0, $day = 0)
     {
-        $this->year = $year;
-        $this->month = $month;
-        $this->day = $day;
+        $this->year = intval($year);
+        $this->month = intval($month);
+        $this->day = intval($day);
     }
 }
