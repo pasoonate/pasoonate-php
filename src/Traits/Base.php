@@ -3,6 +3,7 @@
 namespace Pasoonate\Traits;
 
 use Pasoonate\Date;
+use Pasoonate\DateTime;
 use Pasoonate\Time;
 
 trait Base
@@ -243,6 +244,9 @@ trait Base
         return $this;
     }
 
+    /**
+     * @return Date
+     */
     public function getDate()
     {
         $datetime = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
@@ -258,6 +262,9 @@ trait Base
         return $this;
     }
 
+    /**
+     * @return Time
+     */
     public function getTime()
     {
         $datetime = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
@@ -273,6 +280,10 @@ trait Base
         return $this;
     }
 
+    /**
+     * @return DateTime
+     *
+     */
     public function getDateTime()
     {
         return $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
