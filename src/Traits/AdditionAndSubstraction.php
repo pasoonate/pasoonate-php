@@ -11,7 +11,7 @@ trait AdditionAndSubstraction
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
         $timestamp = $this->currentCalendar->dateToTimestamp($date->year + $count, $date->month, $date->day, $date->hour, $date->minute, $date->second);
         $this->timestamp = $timestamp - $this->timezoneOffset;
-        
+
         return $this;
     }
 
@@ -19,11 +19,15 @@ trait AdditionAndSubstraction
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
         $totalMonth = $date->month + $count;
-        $year = $date->year + floor($totalMonth / 12);
-        $month = $totalMonth % 12;
-        $timestamp = $this->currentCalendar->dateToTimestamp($year, $month, $date->day, $date->hour, $date->minute, $date->second);
+        $year = $date->year + floor($totalMonth / 12) - (($totalMonth % 12) == 0 ? 1 : 0);
+        $month = ($totalMonth % 12) == 0 ? 12 : ($totalMonth % 12);
+
+        $daysInMonth = $this->currentCalendar->daysInMonth($year, $month);
+        $day = $date->day <= $daysInMonth ? $date->day : $daysInMonth;
+
+        $timestamp = $this->currentCalendar->dateToTimestamp($year, $month, $day, $date->hour, $date->minute, $date->second);
         $this->timestamp = $timestamp - $this->timezoneOffset;
-        
+
         return $this;
     }
 
@@ -107,7 +111,7 @@ trait AdditionAndSubstraction
     public function subSecond($count)
     {
         $this->timestamp = $this->timestamp - $count;
-        
+
         return $this;
     }
 }

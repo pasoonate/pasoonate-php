@@ -22,8 +22,9 @@ class CalendarTest extends TestCase
         $this->assertTrue($pasoonate->jalali()->setDate(1399,12,11)->daysInMonth() === 30);
 
         $julianDayNumber = $pasoonate->jalali()->setDate(1399,12,11)->getJulianDayNumber();
-
         $this->assertTrue($pasoonate->jalali()->setJulianDayNumber($julianDayNumber)->gregorian()->getJulianDayNumber() == $julianDayNumber);
+
+        $this->assertEquals($pasoonate->jalali()->setDate(1399,1,31)->addMonth(11)->format('yyyy/MM/dd'), '1399/12/30');
     }
 
     public function testGregorianDateTime()
