@@ -164,7 +164,7 @@ abstract class Calendar
     {
         $julianDay = $this->timestampToJulianDay($timestamp);
 
-        return $this->mod(floor($julianDay + 2.5), Constants::DAYS_PER_WEEK);
+        return intval($this->mod(floor($julianDay + 2.5), Constants::DAYS_PER_WEEK));
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class Calendar
         $firstOfYearJulianDay = $this->dateToJulianDay($currentDate->year, 1, 1, 0, 0, 0);
         $currentJulianDay = $this->dateToJulianDay($currentDate->year, $currentDate->month, $currentDate->day, $currentDate->hour, $currentDate->minute, $currentDate->second);
         
-        return floor($currentJulianDay - $firstOfYearJulianDay + 1);
+        return intval(floor($currentJulianDay - $firstOfYearJulianDay + 1));
     }
 
     /**

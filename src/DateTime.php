@@ -21,11 +21,11 @@ class DateTime
      */
     public function __construct($year = 0, $month = 0, $day = 0, $hour = 0, $minute = 0, $second = 0)
     {
-        $this->year = $year;
-        $this->month = $month;
-        $this->day = $day;
-        $this->hour = $hour;
-        $this->minute = $minute;
-        $this->second = $second;
+        $this->year = intval($year);
+        $this->month = intval($month);
+        $this->day = intval($day);
+        $this->hour = intval($hour);
+        $this->minute = intval($minute);
+        $this->second = intval($second);
     }    
 }

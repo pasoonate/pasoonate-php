@@ -67,7 +67,7 @@ class JalaliCalendar extends Calendar
     }
 
     public function daysInMonth($year, $month)
-    {        
+    {
         $gregorianDaysInMonth = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29); //30
 
         if ($month < 1 || $month > 12) {
@@ -83,6 +83,13 @@ class JalaliCalendar extends Calendar
 
     public function isLeap($year)
     {
-        return (((((($year - (($year > 0) ? 474 : 473)) % 2820) + 474) + 38) * 682) % 2816) < 682;
+        // this is the original code and equal to js code and it is not working
+        //return (((((($year - (($year > 0) ? 474 : 473)) % 2820) + 474) + 38) * 682) % 2816) < 682;
+        $a = ($year > 0) ? 474 : 473;
+        $b = ($year - $a) % 2820;
+        $c = $b + 474 + 38;
+        $d = $c * 682;
+        $e = $d % 2816;
+        return $e < 682;
     }
 }

@@ -2,6 +2,10 @@
 
 namespace Pasoonate\Traits;
 
+use Pasoonate\Date;
+use Pasoonate\DateTime;
+use Pasoonate\Time;
+
 trait Base
 {
     public function setTimestamp($timestamp)
@@ -42,6 +46,23 @@ trait Base
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
 
         return $date->year;
+    }
+
+    public function setJulianDayNumber($julianDay)
+    {
+        $datetime = $this->currentCalendar->julianDayToDate($julianDay);
+        $this->setYear($datetime->year);
+        $this->setMonth($datetime->month);
+        $this->setDay($datetime->day);
+        $this->setHour($datetime->hour);
+        $this->setMinute($datetime->minute);
+        $this->setSecond($datetime->second);
+        return $this;
+    }
+
+    public function getJulianDayNumber()
+    {
+        return $this->currentCalendar->dateToJulianDay($this->getYear(), $this->getMonth(), $this->getDay(), $this->getHour(), $this->getMinute(), $this->getSecond());
     }
 
     public function setMonth($month)
@@ -223,6 +244,15 @@ trait Base
         return $this;
     }
 
+    /**
+     * @return Date
+     */
+    public function getDate()
+    {
+        $datetime = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
+        return new Date($datetime->year, $datetime->month, $datetime->day);
+    }
+
     public function setTime($hour, $minute, $second)
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
@@ -232,6 +262,15 @@ trait Base
         return $this;
     }
 
+    /**
+     * @return Time
+     */
+    public function getTime()
+    {
+        $datetime = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
+        return new Time($datetime->hour, $datetime->minute, $datetime->second);
+    }
+
     public function setDateTime($year, $month, $day, $hour, $minute, $second)
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
@@ -239,6 +278,15 @@ trait Base
         $this->timestamp = $timestamp - $this->timezoneOffset;
 
         return $this;
+    }
+
+    /**
+     * @return DateTime
+     *
+     */
+    public function getDateTime()
+    {
+        return $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
     }
 
     public function setUTCDate($year, $month, $day)
@@ -261,7 +309,7 @@ trait Base
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp);
         $this->timestamp = $this->currentCalendar->dateToTimestamp($year, $month, $day, $hour, $minute, $second);
-        
+
         return $this;
     }
 
@@ -283,5 +331,10 @@ trait Base
     public function weekOfYear()
     {
         return $this->currentCalendar->weekOfYear($this->timestamp + $this->timezoneOffset);
+    }
+
+    public function daysInMonth()
+    {
+        return $this->currentCalendar->daysInMonth($this->getYear(), $this->getMonth());
     }
 }

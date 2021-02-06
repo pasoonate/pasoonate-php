@@ -9,50 +9,50 @@ trait Comparison
 {
     /**
      * @param CalendarManager $other
-     * 
+     *
      * @return bool
      */
-    public function equal (CalendarManager $other) 
+    public function equal(CalendarManager $other)
     {
         return $this->getTimestamp() === $other->getTimestamp();
     }
 
     /**
      * @param CalendarManager $other
-     * 
+     *
      * @return bool
      */
-    public function afterThan (CalendarManager $other) 
+    public function afterThan(CalendarManager $other)
     {
         return $this->getTimestamp() > $other->getTimestamp();
     }
 
     /**
      * @param CalendarManager $other
-     * 
+     *
      * @return bool
      */
-    public function afterThanOrEqual (CalendarManager $other) 
+    public function afterThanOrEqual(CalendarManager $other)
     {
         return $this->getTimestamp() >= $other->getTimestamp();
     }
 
     /**
      * @param CalendarManager $other
-     * 
+     *
      * @return bool
      */
-    public function beforeThan (CalendarManager $other) 
+    public function beforeThan(CalendarManager $other)
     {
         return $this->getTimestamp() < $other->getTimestamp();
     }
 
     /**
      * @param CalendarManager $other
-     * 
+     *
      * @return bool
      */
-    public function beforeThanOrEqual (CalendarManager $other) 
+    public function beforeThanOrEqual(CalendarManager $other)
     {
         return $this->getTimestamp() <= $other->getTimestamp();
     }
@@ -60,120 +60,120 @@ trait Comparison
     /**
      * @param CalendarManager $a
      * @param CalendarManager $b
-     * 
+     *
      * @return bool
      */
-    public function between (CalendarManager $a, CalendarManager $b) 
+    public function between(CalendarManager $a, CalendarManager $b)
     {
         return $a->getTimestamp() <= $this->getTimestamp() && $b->getTimestamp() >= $this->getTimestamp();
     }
 
     /**
      * @param CalendarManager $other
-     * 
+     *
      * @return bool
      */
-    public function min (CalendarManager $other) 
+    public function min(CalendarManager $other)
     {
         return $this->getTimestamp() <= $other->getTimestamp() ? $this : $other;
     }
 
     /**
      * @param CalendarManager $other
-     * 
+     *
      * @return bool
      */
-    public function max (CalendarManager $other) 
+    public function max(CalendarManager $other)
     {
         return $this->getTimestamp() >= $other->getTimestamp() ? $this : $other;
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function isWeekday () 
+    public function isWeekday()
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) !== Constants::FRIDAY;
+        return $this->dayOfWeek() !== Constants::FRIDAY;
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function isWeekend () 
+    public function isWeekend()
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::FRIDAY;
+        return $this->dayOfWeek() === Constants::FRIDAY;
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function isSaturday () 
+    public function isSaturday()
     {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::SATURDAY;
-    }
-    
-    /**
-     * 
-     * @return bool
-     */
-    public function isSunday () 
-    {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::SUNDAY;
-    }
-    
-    /**
-     * 
-     * @return bool
-     */
-    public function isMonday () 
-    {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::MONDAY;
-    }
-    
-    /**
-     * 
-     * @return bool
-     */
-    public function isTuesday () 
-    {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::TUESDAY;
-    }
-    
-    /**
-     * 
-     * @return bool
-     */
-    public function isWednesday () 
-    {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::WEDNESDAY;
-    }
-    
-    /**
-     * 
-     * @return bool
-     */
-    public function isThursday () 
-    {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::THURSDAY;
-    }
-    
-    /**
-     * 
-     * @return bool
-     */
-    public function isFriday () 
-    {
-        return $this->currentCalendar->dayOfWeek($this->getTimestamp() + $this->getTimezoneOffset()) === Constants::FRIDAY;
+        return $this->dayOfWeek() === Constants::SATURDAY;
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function isYesterday () 
+    public function isSunday()
+    {
+        return $this->dayOfWeek() === Constants::SUNDAY;
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function isMonday()
+    {
+        return $this->dayOfWeek() === Constants::MONDAY;
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function isTuesday()
+    {
+        return $this->dayOfWeek() === Constants::TUESDAY;
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function isWednesday()
+    {
+        return $this->dayOfWeek() === Constants::WEDNESDAY;
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function isThursday()
+    {
+        return $this->dayOfWeek() === Constants::THURSDAY;
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function isFriday()
+    {
+        return $this->dayOfWeek() === Constants::FRIDAY;
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function isYesterday()
     {
         $yesterday = $this->clone()->gregorian()->subDay(1);
 
@@ -181,10 +181,10 @@ trait Comparison
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function isToday () 
+    public function isToday()
     {
         $today = $this->clone()->gregorian();
 
@@ -192,10 +192,10 @@ trait Comparison
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function isTomorrow () 
+    public function isTomorrow()
     {
         $tomorrow = $this->clone()->gregorian()->addDay(1);
 
@@ -203,10 +203,10 @@ trait Comparison
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function isFuture () 
+    public function isFuture()
     {
         $today = $this->clone()->gregorian();
 
@@ -214,10 +214,10 @@ trait Comparison
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function isPast () 
+    public function isPast()
     {
         $today = $this->clone()->gregorian();
 
@@ -225,20 +225,20 @@ trait Comparison
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function isLeapYear () 
+    public function isLeapYear()
     {
-        return $this->currentCalendar->isLeap($this->currentCalendar->getYear());
+        return $this->currentCalendar->isLeap($this->getYear());
     }
 
     /**
      * @param CalendarManager $other
-     * 
+     *
      * @return bool
      */
-    public function isSameDay (CalendarManager $other) 
+    public function isSameDay(CalendarManager $other)
     {
         return $this->gregorian()->diffInDays($other) === 0;
     }
