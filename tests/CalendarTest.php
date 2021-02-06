@@ -9,7 +9,7 @@ class CalendarTest extends TestCase
     {
         $pasoonate = Pasoonate::make();
 
-        $this->assertEquals($pasoonate->jalali('1398/12/10')->format('yyyy/MM/dd'), '1398/12/10', 'Jalali Date is ok');
+        $this->assertEquals($pasoonate->jalali()->parse('yyyy/MM/dd', '1398/12/10')->format('yyyy/MM/dd'), '1398/12/10', 'Jalali Date is ok');
 
         $this->assertTrue($pasoonate->jalali()->setDate(1399,1,1)->isLeapYear());
 
@@ -33,6 +33,6 @@ class CalendarTest extends TestCase
 
         $this->assertTrue($pasoonate->gregorian()->setDate(2021,02,05)->isFriday());
 
-        $this->assertEquals($pasoonate->gregorian('2021/02/05')->format('yyyy/MM/dd'), '2021/02/05', 'Jalali Date is ok');
+        $this->assertEquals($pasoonate->gregorian()->parse('yyyy/MM/dd', '2021/02/05')->format('yyyy/MM/dd'), '2021/02/05', 'Jalali Date is ok');
     }
 }
