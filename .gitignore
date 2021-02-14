@@ -3,4 +3,5 @@ composer.lock
 composer-test.lock
 vendor/
 .idea
+.vscode
 .DS_STORE
