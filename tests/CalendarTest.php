@@ -37,4 +37,11 @@ class CalendarTest extends TestCase
 
         $this->assertEquals($pasoonate->gregorian()->parse('yyyy/MM/dd', '2021/02/05')->format('yyyy/MM/dd'), '2021/02/05', 'Jalali Date is ok');
     }
+
+    public function testShiaDateTime()
+    {
+        $pasoonate = Pasoonate::make();
+
+        $this->assertTrue($pasoonate->shia()->setDate(1442,7,14)->isFriday());
+    }
 }
