@@ -17,7 +17,5 @@ composer require pasoonate/pasoonate-php
 
 ```bash
 composer install
-./vendor/bin/phpunit tests
+./vendor/bin/phpunit
 ```
-
-
