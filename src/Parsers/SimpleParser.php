@@ -129,7 +129,7 @@ class SimpleParser extends Parser
             self::SHORT_SECOND => '(\d{1,2})',
         ];
 
-        for ($i = 0; $i < mb_strlen($format); $i++) {
+        for ($i = 0; $i < strlen($format); $i++) {
             $currChar = $format[$i];
 
             if ($currChar === '') {
