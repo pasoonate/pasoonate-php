@@ -77,8 +77,9 @@ class ShiaCalendar extends Calendar
             1440 => [30, 29, 30, 30, 30, 29, 29, 30, 29, 30, 29, 29],
             1441 => [29, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29, 30],
             1442 => [29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29],
-        ];        
-    
+            1443 => [29, 30, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30],
+        ];
+
         if ($month < 1 || $month > 12) {
             throw new OutOfRangeException("$month Out Of Range Exception");
         }
