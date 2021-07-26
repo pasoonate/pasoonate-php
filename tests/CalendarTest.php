@@ -7,7 +7,7 @@ class CalendarTest extends TestCase
 {
     public function testJalaliDateTime()
     {
-        $pasoonate = Pasoonate::make();
+        $pasoonate = Pasoonate::make(null, 'Asia/Tehran');
 
         $this->assertEquals($pasoonate->jalali()->parse('yyyy/MM/dd', '1398/12/10')->format('yyyy/MM/dd'), '1398/12/10', 'Jalali Date is ok');
 
@@ -31,7 +31,7 @@ class CalendarTest extends TestCase
 
     public function testGregorianDateTime()
     {
-        $pasoonate = Pasoonate::make();
+        $pasoonate = Pasoonate::make(null, 'Asia/Tehran');
 
         $this->assertTrue($pasoonate->gregorian()->setDate(2021,02,05)->isFriday());
 
@@ -40,7 +40,7 @@ class CalendarTest extends TestCase
 
     public function testShiaDateTime()
     {
-        $pasoonate = Pasoonate::make();
+        $pasoonate = Pasoonate::make(null, 'Asia/Tehran');
 
         $this->assertTrue($pasoonate->shia()->setDate(1442,7,14)->isFriday());
 
