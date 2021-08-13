@@ -59,7 +59,7 @@ class ShiaCalendar extends Calendar
 
         $julianDay += $dayOfYear;
         $julianDay += ($year - 1) * Constants::DAYS_OF_SHIA_YEAR;
-        $julianDay += floor(((11 * $year) + 3) / 30);
+        $julianDay += floor(((11 * $year) + 14) / 30);
         $julianDay += Constants::SHIA_EPOCH - ($year === 1440 ? 2 : 1);
         
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
