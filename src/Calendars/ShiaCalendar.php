@@ -45,6 +45,7 @@ class ShiaCalendar extends Calendar
     {
         $daysInMonth = $this->daysInMonth($year, $month);
         $dayOfYear = $day;
+        $firstOfYear = $this->julianDayFirstOfYear($year);
         $julianDay = 0;
 
         if ($day > $daysInMonth) {
@@ -58,9 +59,15 @@ class ShiaCalendar extends Calendar
         }
 
         $julianDay += $dayOfYear;
-        $julianDay += ($year - 1) * Constants::DAYS_OF_SHIA_YEAR;
-        $julianDay += floor(((11 * $year) + 14) / 30);
-        $julianDay += Constants::SHIA_EPOCH - ($year === 1440 ? 2 : 1);
+
+        if($firstOfYear) {
+            $julianDay += $firstOfYear - 1;
+        }
+        else {
+            $julianDay += ($year - 1) * Constants::DAYS_OF_SHIA_YEAR;
+            $julianDay += floor(((11 * $year) + 14) / 30);
+            $julianDay += Constants::SHIA_EPOCH - ($year === 1440 ? 2 : 1);
+        }
         
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
@@ -89,6 +96,23 @@ class ShiaCalendar extends Calendar
         }
 
         return $shiaDaysInMonthInYears[$year][$month - 1];
+    }
+
+    public function julianDayFirstOfYear($year)
+    {
+        $julianDays = [
+            1435 => 2456601.5, 
+            1436 => 2456956.5,
+            1437 => 2457310.5,
+            1438 => 2457664.5,
+            1439 => 2458018.5,
+            1440 => 2458372.5,
+            1441 => 2458727.5,
+            1442 => 2459082.5,
+            1443 => 2459436.5
+        ];
+
+        return $julianDays[$year];
     }
 
     public function isLeap($year)
