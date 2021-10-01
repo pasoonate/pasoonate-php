@@ -172,10 +172,10 @@ class SimpleParser extends Parser
     {
         if(!preg_match($pattern, $text, $matches))
         {
-            return null;
+            return [];
         }
-
-        $components = [];
+        
+        $components = [];      
 
         for($i = 1; $i < count($matches); $i++) {
             $components[$sequence[$i - 1]] = $matches[$i];
