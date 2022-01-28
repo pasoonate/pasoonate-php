@@ -21,7 +21,7 @@ class ShiaCalendar extends Calendar
 
         $year = floor(((($julianDay - Constants::SHIA_EPOCH) * 30) + 10646) / 10631);
         $month = min(12, ceil(($julianDay - (29 + $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second)))) / 29.5) + 1);
-        $dayOfYear = $julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year -1, 12, $this->daysInMonth($year - 1, 12), $time->hour, $time->minute, $time->second));
+        $dayOfYear = $julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year - 1, 12, $this->daysInMonth($year - 1, 12), $time->hour, $time->minute, $time->second));
         $days = 0;
 
         for ($i = 1; $i <= 12; $i++) {
@@ -60,15 +60,14 @@ class ShiaCalendar extends Calendar
 
         $julianDay += $dayOfYear;
 
-        if($firstOfYear) {
+        if ($firstOfYear) {
             $julianDay += $firstOfYear - 1;
-        }
-        else {
+        } else {
             $julianDay += ($year - 1) * Constants::DAYS_OF_SHIA_YEAR;
             $julianDay += floor(((11 * $year) + 14) / 30);
             $julianDay += Constants::SHIA_EPOCH - ($year === 1440 ? 2 : 1);
         }
-        
+
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
 
@@ -101,7 +100,7 @@ class ShiaCalendar extends Calendar
     public function julianDayFirstOfYear($year)
     {
         $julianDays = [
-            1435 => 2456601.5, 
+            1435 => 2456601.5,
             1436 => 2456956.5,
             1437 => 2457310.5,
             1438 => 2457664.5,
@@ -112,13 +111,16 @@ class ShiaCalendar extends Calendar
             1443 => 2459436.5
         ];
 
-        return $julianDays[$year];
+        if (isset($julianDays[$year])) {
+            return $julianDays[$year];
+        }
+        return $this->dateToJulianDay($year, 1, 1, 0, 0, 0);
     }
 
     public function isLeap($year)
     {
         $isLeap = ((($year * 11) + 14) % 30) < 11;
-        
+
         return $isLeap;
     }
 }
