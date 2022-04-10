@@ -45,5 +45,7 @@ class CalendarTest extends TestCase
         $this->assertTrue($pasoonate->shia()->setDate(1442,7,14)->isFriday());
 
         $this->assertEquals($pasoonate->jalali()->setDate(1400,5,19)->shia()->format('yyyy/MM/dd'), '1443/01/01');
+
+        $this->assertEquals($pasoonate->jalali()->setDate(1401,1,14)->shia()->format('yyyy/MM/dd'), '1443/09/01');
     }
 }
