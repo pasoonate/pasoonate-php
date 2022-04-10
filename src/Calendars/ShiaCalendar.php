@@ -38,7 +38,7 @@ class ShiaCalendar extends Calendar
 
         $datetime = new DateTime($year, $month, $day, $time->hour, $time->minute, $time->second);
 
-        return $datetime;;
+        return $datetime;
     }
 
     public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
@@ -83,7 +83,8 @@ class ShiaCalendar extends Calendar
             1440 => [30, 29, 30, 30, 30, 29, 29, 30, 29, 30, 29, 29],
             1441 => [29, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29, 30],
             1442 => [29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29],
-            1443 => [29, 30, 30, 29, 29, 30, 29, 29, 30, 29, 30, 30],
+            1443 => [29, 30, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29]
+
         ];
 
         if ($month < 1 || $month > 12) {
