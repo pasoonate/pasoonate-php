@@ -83,8 +83,8 @@ class ShiaCalendar extends Calendar
             1440 => [30, 29, 30, 30, 30, 29, 29, 30, 29, 30, 29, 29],
             1441 => [29, 30, 29, 30, 30, 29, 30, 30, 29, 30, 29, 30],
             1442 => [29, 29, 30, 29, 30, 29, 30, 30, 29, 30, 30, 29],
-            1443 => [29, 30, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29]
-
+            1443 => [29, 30, 30, 29, 29, 30, 29, 30, 29, 30, 30, 29],
+            1444 => [30, 30, 29, 30, 29, 29, 30, 30, 29, 30, 29, 30],
         ];
 
         if ($month < 1 || $month > 12) {
@@ -109,13 +109,26 @@ class ShiaCalendar extends Calendar
             1440 => 2458372.5,
             1441 => 2458727.5,
             1442 => 2459082.5,
-            1443 => 2459436.5
+            1443 => 2459436.5,
+            1444 => 2459790.5,
         ];
 
         if (isset($julianDays[$year])) {
             return $julianDays[$year];
         }
-        return $this->dateToJulianDay($year, 1, 1, 0, 0, 0);
+
+        $availYears = array_keys($julianDays);
+        $minYear = min($availYears);
+        $maxYear = max($availYears);        
+
+        if($year > $maxYear) {
+            $julianDay = $julianDays[$maxYear] + (($year - $maxYear) * Constants::DAYS_OF_SHIA_YEAR);
+        } 
+        else { // $year < $minYear
+            $julianDay = $julianDays[$minYear] - (($minYear - $year) * Constants::DAYS_OF_SHIA_YEAR);
+        }
+
+        return $julianDay;
     }
 
     public function isLeap($year)
