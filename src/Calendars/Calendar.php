@@ -77,7 +77,7 @@ abstract class Calendar
         // Astronomical to civil
         $time = floor(($julianDay - floor($julianDay)) * Constants::DAY_IN_SECONDS);
 
-        return new Time(floor($time / Constants::HOUR_IN_SECONDS), floor(($time / Constants::MINUTES_PER_HOUR) % Constants::SECONDS_PER_MINUTE), floor($time % Constants::SECONDS_PER_MINUTE));
+        return new Time(floor($time / Constants::HOUR_IN_SECONDS), floor($time / Constants::MINUTES_PER_HOUR) % Constants::SECONDS_PER_MINUTE, floor($time % Constants::SECONDS_PER_MINUTE));
     }
 
     /**
