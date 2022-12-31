@@ -40,39 +40,41 @@ class SimpleParser extends Parser
         $components = $this->match($result['pattern'], $text, $result['sequence']);
 
         $calendar = $this->getCalendar();
+
+        $dateTime = $calendar->getDateTime();
         
         foreach($components as $key => $value) {
             switch($key) {
                 case self::FULL_YEAR:
                 case self::SHORT_YEAR:
-                    $calendar->setYear((int)$value);
+                    $dateTime->year = (int)$value;
                 break;
                 case self::FULL_MONTH:
                 case self::SHORT_MONTH:
-                    $calendar->setMonth((int)$value);
+                    $dateTime->month = (int)$value;
                 break;
                 case self::FULL_DAY:
                 case self::SHORT_DAY:
-                    $calendar->setDay((int)$value);
+                    $dateTime->day = (int)$value;
                 break;
                 case self::FULL_HOUR:
                 case self::SHORT_HOUR:
-                    $calendar->setHour((int)$value);
+                    $dateTime->hour = (int)$value;
                 break;
                 case self::FULL_MINUTE:
                 case self::SHORT_MINUTE:
-                    $calendar->setMinute((int)$value);
+                    $dateTime->minute = (int)$value;
                 break;
                 case self::FULL_SECOND:
                 case self::SHORT_SECOND:
-                    $calendar->setSecond((int)$value);
+                    $dateTime->second = (int)$value;
                 break;
                 case self::FULL_MONTH_NAME:
                     $names = Pasoonate::trans($calendar->name() . '.month_name');
                     $month = array_search($value, $names);
 
                     if($month > 0) {
-                        $calendar->setMonth($month);
+                        $dateTime->month = $month;
                     }
                 break;
                 case self::SHORT_MONTH_NAME:
@@ -80,7 +82,7 @@ class SimpleParser extends Parser
                     $month = array_search($value, $names);
 
                     if($month > 0) {
-                        $calendar->setMonth($month);
+                        $dateTime->month = $month;
                     }
                 break;
                 case self::FULL_DAY_NAME:
@@ -93,6 +95,8 @@ class SimpleParser extends Parser
                 break;
             }
         }
+
+        $calendar->setDateTime($dateTime->year, $dateTime->month, $dateTime->day, $dateTime->hour, $dateTime->minute, $dateTime->second);
     }
 
     /**
