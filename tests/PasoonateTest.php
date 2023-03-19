@@ -12,6 +12,20 @@ class PasoonateTest extends TestCase
 
         $this->assertEquals($date, '1399/10/12 20:12:00', 'Jalali Date is ok');
     }
+    
+    public function testGregorianParser()
+    {
+        $pasoonate = Pasoonate::make();
+        $datetime = $pasoonate->gregorian()->parse('yyyy/MM/dd HH:mm:ss', '2023/02/12 14:00:00')->format('HH:mm');
+
+        $this->assertEquals($datetime, '14:00', 'Gregorian Time is ok');
+
+
+        $pasoonate = Pasoonate::make();
+        $datetime = $pasoonate->gregorian()->parse('yyyy/MM/dd HH:mm:ss', '2023/02/12 14:20:00')->format('HH:mm');
+
+        $this->assertEquals($datetime, '14:20', 'Gregorian Time is ok');
+    }
 
     public function testGaregorianParser1()
     {
