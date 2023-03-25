@@ -4,6 +4,7 @@ namespace Pasoonate\Calendars;
 
 use Pasoonate\Constants;
 use Pasoonate\Date;
+use Pasoonate\DateTime;
 use Pasoonate\Time;
 use stdClass;
 
@@ -75,7 +76,7 @@ abstract class Calendar
         $julianDay += 0.5;
 
         // Astronomical to civil
-        $time = floor(($julianDay - floor($julianDay)) * Constants::DAY_IN_SECONDS);
+        $time = round(($julianDay - floor($julianDay)) * Constants::DAY_IN_SECONDS);
 
         return new Time(floor($time / Constants::HOUR_IN_SECONDS), floor($time / Constants::MINUTES_PER_HOUR) % Constants::SECONDS_PER_MINUTE, floor($time % Constants::SECONDS_PER_MINUTE));
     }
@@ -131,14 +132,14 @@ abstract class Calendar
     /**
      * @param float $julianDay
      * 
-     * @return Date
+     * @return DateTime
      */
     abstract public function julianDayToDate($julianDay);
 
     /**
      * @param int $timestamp
      * 
-     * @return Date
+     * @return DateTime
      */
     final public function timestampToDate($timestamp)
     {
