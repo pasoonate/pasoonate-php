@@ -27,6 +27,8 @@ class CalendarTest extends TestCase
         $this->assertEquals($pasoonate->jalali()->setDate(1399,1,31)->addMonth(11)->format('yyyy/MM/dd'), '1399/12/30');
 
         $this->assertEquals($pasoonate->jalali()->setTime(1,1,1)->format('H-m-s'), '1-1-1');
+
+        $this->assertTrue($pasoonate->jalali()->setDate(1403,6,14)->shia()->format('yyyy/MM/dd') === '1446/02/30');
     }
 
     public function testGregorianDateTime()
