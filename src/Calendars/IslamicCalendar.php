@@ -58,8 +58,6 @@ class IslamicCalendar extends Calendar
 
     public function isLeap($year)
     {
-        $isLeap = ((($year * 11) + 14) % 30) < 11;
-
-        return $isLeap;
+        return ((($year * 11) + 14) % 30) < 11;
     }
 }

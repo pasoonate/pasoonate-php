@@ -83,13 +83,11 @@ class JalaliCalendar extends Calendar
 
     public function isLeap($year)
     {
-        // this is the original code and equal to js code and it is not working
-        //return (((((($year - (($year > 0) ? 474 : 473)) % 2820) + 474) + 38) * 682) % 2816) < 682;
-        $a = ($year > 0) ? 474 : 473;
-        $b = ($year - $a) % 2820;
-        $c = $b + 474 + 38;
-        $d = $c * 682;
-        $e = $d % 2816;
-        return $e < 682;
+        $validRemainValueAfter1343 = [1,5,9,13,17,22,26,30];
+        $validRemainValueBefore1343 = [1,5,9,13,17,21,26,30];
+
+        $remain = $year % 33;
+
+	    return $year < 1343 ? in_array($remain, $validRemainValueBefore1343) : in_array($remain, $validRemainValueAfter1343);
     }
 }
