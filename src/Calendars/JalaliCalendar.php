@@ -28,6 +28,10 @@ class JalaliCalendar extends Calendar
         $aux1 = null;
         $aux2 = null;
 
+        if($cyear == 339309) {
+            $cyear--;
+        }
+
         if ($cyear == 1029982) {
             $ycycle = 2820;
         } else {
