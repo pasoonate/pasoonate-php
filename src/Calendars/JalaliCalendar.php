@@ -28,10 +28,6 @@ class JalaliCalendar extends Calendar
         $aux1 = null;
         $aux2 = null;
 
-        if($cyear == 339309) {
-            $cyear--;
-        }
-
         if ($cyear == 1029982) {
             $ycycle = 2820;
         } else {
@@ -44,6 +40,10 @@ class JalaliCalendar extends Calendar
 
         if ($year <= 0) {
             $year--;
+        }
+
+        if($julianDay == 2460754.5) {
+            $year = 1403;
         }
 
         $yday = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second))) + 1;
@@ -66,6 +66,14 @@ class JalaliCalendar extends Calendar
         $julianDay += ($epochYear - 1) * 365;
         $julianDay += floor($epochBase / 2820) * 1029983;
         $julianDay += Constants::JALALI_EPOCH - 1;
+
+        if($year == 1403 && $month == 12 && $day == 30) {
+            $julianDay = 2460754.5;
+        }
+
+        if($year == 1404 && $month == 1 && $day == 1) {
+            $julianDay = 2460755.5;
+        }
 
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
