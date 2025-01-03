@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 class PasoonateTest extends TestCase
 {
-    public function testParser()
+    public function testJalaliParser()
     {
         $pasoonate = Pasoonate::make();
         $date = $pasoonate->jalali()->parse('yyyy/MM/dd HH:mm:ss', '1404/01/01 20:12:00')->format('yyyy/MM/dd HH:mm:ss');

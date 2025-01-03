@@ -34,6 +34,7 @@ class Constants
 	const DAYS_OF_ISLAMIC_YEAR = 354;
 	const DAYS_OF_SHIA_YEAR = 354;
 	const DAYS_OF_JALALI_YEAR = 365;
+	const DAYS_OF_TROPICAL_JALALI_YEAR = 365.24219878;
 	const DAYS_OF_GREGORIAN_YEAR = 365;
 	const GREGORIAN = 'gregorian';
 	const JALALI = 'jalali';

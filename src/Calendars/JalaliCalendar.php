@@ -10,76 +10,36 @@ class JalaliCalendar extends Calendar
 {
     public function __construct()
     {
-        parent::__construct('jalali');
+        parent::__construct(Constants::JALALI);
     }
 
     public function julianDayToDate($julianDay)
     {
         $timestamp = $this->julianDayToTimestamp($julianDay);
         $base = $timestamp + 42531868800;
-        $second = $this->mod($base, 60);
-        $minute = floor($this->mod($base, 3600) / 60);
-        $hour = floor($this->mod($base, 86400) / 3600);
-        $days = floor($base / 86400);
-        $year = floor($days / 365);
-        $dayOfYear = $days - (floor((($year * 682) - 110) / 2816) + (($year - 1) * 365));
+        $second = $this->mod($base, Constants::SECONDS_PER_MINUTE);
+        $minute = floor($this->mod($base, Constants::HOUR_IN_SECONDS) / Constants::MINUTES_PER_HOUR);
+        $hour = floor($this->mod($base, Constants::DAY_IN_SECONDS) / Constants::HOUR_IN_SECONDS);
+        $days = floor($base / Constants::DAY_IN_SECONDS);
+        $fyear = floor($days / Constants::DAYS_OF_TROPICAL_JALALI_YEAR); 
+        $year = floor($days / Constants::DAYS_OF_JALALI_YEAR); 
+        $dayOfYear = $days - floor($fyear * Constants::DAYS_OF_TROPICAL_JALALI_YEAR);
 
-        if ($days >= 512460 && $days <= 512497) {
+        if($this->isLeap($fyear)) {
             $dayOfYear--;
+        }
+
+        if($dayOfYear >= Constants::DAYS_OF_JALALI_YEAR && !$this->isLeap($year)) {
+            $dayOfYear = 0;
+            $year++;
+        }
+
+        if($year === $fyear) {
+            $year++;
         }
 
         $month = floor($dayOfYear <= 186 ? ($dayOfYear / 31) : (($dayOfYear - 6) / 30)) + 1;
         $day = $dayOfYear - ($month <= 7 ? ($month - 1) * 31 : (($month - 1) * 30) + 6) + 1;
-
-        if ($month > 12) {
-            $day += $this->isLeap($year) ? 0 : 1;
-            $month -= 12;
-            $year += 1; 
-        }
-
-        if ($month == 12 && $day > 29 && !$this->isLeap($year)) {
-            $day = 1;
-            $month = 1;
-            $year += 1;
-        }
-
-        // $time = $this->extractJulianDayTime($julianDay);
-
-        // $julianDay = $this->julianDayWithoutTime($julianDay);
-
-        // $julianDay = floor($julianDay) + 0.5;
-
-        // $depoch = $julianDay - $this->julianDayWithoutTime($this->dateToJulianDay(475, 1, 1, $time->hour, $time->minute, $time->second));
-        // $cycle = floor($depoch / 1029983);
-        // $cyear = $this->mod($depoch, 1029983);
-        // $ycycle = null;
-        // $aux1 = null;
-        // $aux2 = null;
-
-        // if ($cyear == 1029982) {
-        //     $ycycle = 2820;
-        // } else {
-        //     $aux1 = floor($cyear / 366);
-        //     $aux2 = $this->mod($cyear, 366);
-        //     $ycycle = floor(((2134 * $aux1) + (2816 * $aux2) + 2815) / 1028522) + $aux1 + 1;
-        // }
-
-        // $year = $ycycle + (2820 * $cycle) + 474;
-
-        // if ($year <= 0) {
-        //     $year--;
-        // }
-
-        // if($julianDay == 2460754.5) {
-        //     $year = 1403;
-        // }
-
-        // $yday = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second))) + 1;
-        // $month = ($yday <= 186) ? ceil($yday / 31) : ceil(($yday - 6) / 30);
-        // $day = ($julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second))) + 1;
-
-        // $datetime = new DateTime($year, $month, $day, $time->hour, $time->minute, $time->second);
-
 
         $datetime = new DateTime($year, $month, $day, $hour, $minute, $second);
 
@@ -91,39 +51,18 @@ class JalaliCalendar extends Calendar
         $timestamp = 0;
         $days = 0;
 
-        $days += $day - 1;
+        $days += floor(($year - 1) * Constants::DAYS_OF_TROPICAL_JALALI_YEAR);
         $days += $month <= 7 ? (($month - 1) * 31) : ((($month - 1) * 30) + 6);
-        $days += floor((($year * 682) - 110) / 2816) + (($year - 1) * 365);
+        $days += $day - 1;
 
-        if($year == 1404) {
+        if($this->isLeap($year - 1)) {
             $days++;
         }
 
-        $timestamp += $days * 86400;
-        $timestamp += ($hour * 3600) + ($minute * 60) + $second;
+        $timestamp += $days * Constants::DAY_IN_SECONDS;
+        $timestamp += ($hour * Constants::HOUR_IN_SECONDS) + ($minute * Constants::SECONDS_PER_MINUTE) + $second;
         $timestamp -= 42531868800;
-
-
-        // $epochBase = $year - (($year >= 0) ? 474 : 473);
-        // $epochYear = 474 + $this->mod($epochBase, 2820);
-        // $julianDay = $day;
-
-        // $julianDay += $month <= 7 ? ($month - 1) * 31 : (($month - 1) * 30) + 6;
-        // $julianDay += floor((($epochYear * 682) - 110) / 2816);
-        // $julianDay += ($epochYear - 1) * 365;
-        // $julianDay += floor($epochBase / 2820) * 1029983;
-        // $julianDay += Constants::JALALI_EPOCH - 1;
-
-        // if($year == 1403 && $month == 12 && $day == 30) {
-        //     $julianDay = 2460754.5;
-        // }
-
-        // if($year == 1404 && $month == 1 && $day == 1) {
-        //     $julianDay = 2460755.5;
-        // }
-
-        // return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
-
+        
         $julianDay = $this->timestampToJulianDay($timestamp);
 
 		return $julianDay;
