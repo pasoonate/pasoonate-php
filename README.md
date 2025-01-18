@@ -16,20 +16,34 @@ composer install
 ```bash
 composer require pasoonate/pasoonate-php
 ```
-
 ## Usage
 ```php
 use Pasoonate\Pasoonate;
 
-$now = Pasoonate::make();
-```
+function pasoonate(): CalendarManager
+{
+    return Pasoonate::make();
+}
 
-```php
-echo $now->gregorian()->format('Y-m-d'); // 2019-04-19
-```
+// Set timestamp
+$date = pasoonate()->setTimestamp(1333857600)->jalali()->format('yyyy-MM-dd');
 
-```php
-$datetime = $now->jalali('1398/02/01 20:00:00')->gregorian()->getDatetime();
+$datetime = pasoonate()->jalali('1398/02/01 20:00:00')->gregorian()->getDatetime();
+
+$date = pasoonate()->jalali()->format('yyyy-MM-dd'); // Today in Jalali => 1403-10-29
+
+$date = pasoonate()->gregorian()->format('yyyy-MM-dd'); // Today in Gregorian => 2025-01-18
+
+$date = pasoonate()->islamic()->format('yyyy-MM-dd'); // Today in Islamic => 1446-07-18
+
+$date = pasoonate()->shia()->format('yyyy-MM-dd'); // Today in Shia => 1446-07-17
+
+// Convert
+$date = pasoonate()->jalali()->addDay(2)->gregorian()->format('yyyy-MM-dd'); // Today +2 day Gregorian
+
+// Parse Date and time
+pasoonate()->jalali()->parse('yyyy-MM-dd', '1403-10-10')->addDay(3)->format('yyyy-MM-dd'); //1403-10-13
+
 ```
 
 ## Available Calendars
