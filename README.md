@@ -1,21 +1,217 @@
-PHP version of Pasoon Date Library
-=========================
 
-PHP version is compatible with js version
+# PHP nad Laravel Calendar
 
-Check js project for documentation [Pasoonate-js](https://github.com/pasoonate/pasoonate-js)
+Pasoonate is a library that includes date-time methods and calendars.
 
-## Installation
 
-You can install the package via composer:
 
+## Running tests
+```bash
+composer install
+./vendor/bin/phpunit
+```
+
+
+### Install with [Composer](https://getcomposer.org):  
 ```bash
 composer require pasoonate/pasoonate-php
 ```
 
-## Running tests
+## Usage
+```php
+use Pasoonate\Pasoonate;
 
-```bash
-composer install
-./vendor/bin/phpunit
+$now = Pasoonate::make();
+```
+
+```php
+echo $now->gregorian()->format('Y-m-d'); // 2019-04-19
+```
+
+```php
+$datetime = $now->jalali('1398/02/01 20:00:00')->gregorian()->getDatetime();
+```
+
+## Available Calendars
+
+- Gregorian
+- Jalali
+- Islamic
+- Shia
+
+---
+
+## Basic Methods
+
+- `getTimestamp()`
+- `getTimezoneOffset()`
+- `getDatetime()`
+- `getDate()`
+- `getTime()`
+- `getYear()`
+- `getMonth()`
+- `getDay()`
+- `getHour()`
+- `getMinute()`
+- `getSecond()`
+- `getUTCDatetime()`
+- `getUTCDate()`
+- `getUTCTime()`
+- `getUTCYear()`
+- `getUTCMonth()`
+- `getUTCDay()`
+- `getUTCHour()`
+- `getUTCMinute()`
+- `getUTCSecond()`
+- `setTimestamp($timestampAsSeconds)`
+- `setTimezoneOffset($offsetAsMinutes)`
+- `setDatetime($year, $month, $day, $hour, $minute, $second)`
+- `setDate($year, $month, $day)`
+- `setTime($hour, $minute, $second)`
+- `setYear($year)`
+- `setMonth($month)`
+- `setDay($day)`
+- `setHour($hour)`
+- `setMinute($minute)`
+- `setSecond($second)`
+- `setUTCDatetime($year, $month, $day, $hour, $minute, $second)`
+- `setUTCDate($year, $month, $day)`
+- `setUTCTime($hour, $minute, $second)`
+- `setUTCYear($year)`
+- `setUTCMonth($month)`
+- `setUTCDay($day)`
+- `setUTCHour($hour)`
+- `setUTCMinute($minute)`
+- `setUTCSecond($second)`
+- `dayOfWeek()` *(from 0 for Saturday to 6 for Friday)*
+- `dayOfYear()`
+- `weekOfMonth()`
+- `weekOfYear()`
+
+---
+
+## Addition and Subtraction Methods
+
+### Add Year
+```php
+echo $today->jalali('1399/01/15 11:22:00')->addYear(1)->format('Y/m/d H:i:s');
+// 1400/01/15 11:22:00
+```
+
+### Add Month
+```php
+echo $today->jalali()->addMonth(1)->format('Y/m/d H:i:s');
+// 1400/02/15 11:22:00
+```
+
+### Add Day
+```php
+echo $today->jalali()->addDay(3)->format('Y/m/d H:i:s');
+// 1400/02/18 11:22:00
+```
+
+### Add Hour
+```php
+echo $today->jalali()->addHour(4)->format('Y/m/d H:i:s');
+// 1400/02/18 15:22:00
+```
+
+### Add Minute
+```php
+echo $today->jalali()->addMinute(2)->format('Y/m/d H:i:s');
+// 1400/02/18 15:24:00
+```
+
+### Add Second
+```php
+echo $today->jalali()->addSecond(35)->format('Y/m/d H:i:s');
+// 1400/02/18 15:24:35
+```
+
+### Subtract Year
+```php
+echo $today->jalali()->subYear(1)->format('Y/m/d H:i:s');
+// 1399/02/18 15:24:35
+```
+
+### Subtract Month
+```php
+echo $today->jalali()->subMonth(1)->format('Y/m/d H:i:s');
+// 1399/01/18 15:24:35
+```
+
+### Subtract Day
+```php
+echo $today->jalali()->subDay(3)->format('Y/m/d H:i:s');
+// 1399/01/15 15:24:35
+```
+
+### Subtract Hour
+```php
+echo $today->jalali()->subHour(4)->format('Y/m/d H:i:s');
+// 1399/01/15 11:24:35
+```
+
+### Subtract Minute
+```php
+echo $today->jalali()->subMinute(2)->format('Y/m/d H:i:s');
+// 1399/01/15 11:22:35
+```
+
+### Subtract Second
+```php
+echo $today->jalali()->subSecond(35)->format('Y/m/d H:i:s');
+// 1399/01/15 11:22:00
+```
+
+---
+
+## Modifier Methods
+
+### Start Of Day
+```php
+echo $today->jalali('1399/01/15 11:22:00')->startOfDay()->format('Y/m/d H:i:s');
+// 1399/01/15 00:00:00
+```
+
+### End Of Day
+```php
+echo $today->jalali('1399/01/15 11:22:00')->endOfDay()->format('Y/m/d H:i:s');
+// 1399/01/15 23:59:59
+```
+
+### Start Of Week
+```php
+echo $today->jalali('1399/01/15 11:22:00')->startOfWeek()->format('Y/m/d H:i:s');
+// 1399/01/09 00:00:00
+```
+
+### End Of Week
+```php
+echo $today->jalali('1399/01/15 11:22:00')->endOfWeek()->format('Y/m/d H:i:s');
+// 1399/01/15 23:59:59
+```
+
+### Start Of Month
+```php
+echo $today->jalali('1399/01/15 11:22:00')->startOfMonth()->format('Y/m/d H:i:s');
+// 1399/01/01 00:00:00
+```
+
+### End Of Month
+```php
+echo $today->jalali('1399/01/15 11:22:00')->endOfMonth()->format('Y/m/d H:i:s');
+// 1399/01/31 23:59:59
+```
+
+### Start Of Year
+```php
+echo $today->jalali('1399/01/15 11:22:00')->startOfYear()->format('Y/m/d H:i:s');
+// 1399/01/01 00:00:00
+```
+
+### End Of Year
+```php
+echo $today->jalali('1399/01/15 11:22:00')->endOfYear()->format('Y/m/d H:i:s');
+// 1399/12/30 23:59:59
 ```
