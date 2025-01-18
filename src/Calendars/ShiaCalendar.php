@@ -13,7 +13,7 @@ class ShiaCalendar extends Calendar
         parent::__construct('shia');
     }
 
-    public function julianDayToDate($julianDay)
+    public function julianDayToDate(float $julianDay): DateTime
     {
         $time = $this->extractJulianDayTime($julianDay);
 
@@ -41,7 +41,7 @@ class ShiaCalendar extends Calendar
         return $datetime;
     }
 
-    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
+    public function dateToJulianDay(int $year, int $month, int $day, int $hour, int $minute, int $second): float
     {
         $daysInMonth = $this->daysInMonth($year, $month);
         $dayOfYear = $day;
@@ -71,7 +71,7 @@ class ShiaCalendar extends Calendar
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
 
-    public function daysInMonth($year, $month)
+    public function daysInMonth(int $year, int $month): int
     {
         $islamicDaysInMonth = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29]; //30
         $shiaDaysInMonthInYears = [
@@ -100,7 +100,7 @@ class ShiaCalendar extends Calendar
         return $shiaDaysInMonthInYears[$year][$month - 1];
     }
 
-    public function julianDayFirstOfYear($year)
+    public function julianDayFirstOfYear(int $year): float|int
     {
         $julianDays = [
             1435 => 2456601.5,
@@ -123,19 +123,18 @@ class ShiaCalendar extends Calendar
 
         $availYears = array_keys($julianDays);
         $minYear = min($availYears);
-        $maxYear = max($availYears);        
+        $maxYear = max($availYears);
 
-        if($year > $maxYear) {
+        if ($year > $maxYear) {
             $julianDay = $julianDays[$maxYear] + (($year - $maxYear) * Constants::DAYS_OF_SHIA_YEAR);
-        } 
-        else { // $year < $minYear
+        } else { // $year < $minYear
             $julianDay = $julianDays[$minYear] - (($minYear - $year) * Constants::DAYS_OF_SHIA_YEAR);
         }
 
         return $julianDay;
     }
 
-    public function isLeap($year)
+    public function isLeap(int $year): bool
     {
         return ((($year * 11) + 14) % 30) < 11;
     }

@@ -5,7 +5,7 @@ namespace Pasoonate\Calendars;
 use Pasoonate\Formatters\DateFormat;
 use Pasoonate\Parsers\Parser;
 use Pasoonate\Pasoonate;
-use Pasoonate\Traits\AdditionAndSubstraction;
+use Pasoonate\Traits\AdditionAndSubtraction;
 use Pasoonate\Traits\Base;
 use Pasoonate\Traits\Comparison;
 use Pasoonate\Traits\Difference;
@@ -14,7 +14,7 @@ use Pasoonate\Traits\Modifiers;
 class CalendarManager
 {
     use Base;
-    use AdditionAndSubstraction;
+    use AdditionAndSubtraction;
     use Difference;
     use Comparison;
     use Modifiers;

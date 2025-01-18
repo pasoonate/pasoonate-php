@@ -13,7 +13,7 @@ class GregorianCalendar extends Calendar
         parent::__construct('gregorian');
     }
 
-    public function julianDayToDate($julianDay)
+    public function julianDayToDate(float $julianDay): DateTime
     {
         $time = $this->extractJulianDayTime($julianDay);
 
@@ -53,7 +53,7 @@ class GregorianCalendar extends Calendar
         return $datetime;
     }
 
-    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
+    public function dateToJulianDay(int $year, int $month, int $day, int $hour, int $minute, int $second): float
     {
         $julianDay = Constants::GREGORIAN_EPOCH - 1;
 
@@ -66,12 +66,12 @@ class GregorianCalendar extends Calendar
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
 
-    public function isLeap($year)
+    public function isLeap(int $year): bool
     {
         return $year % 4 == 0 && ($year % 100 != 0 || $year % 400 == 0);
     }
 
-    public function daysInMonth($year, $month)
+    public function daysInMonth(int $year, int $month): int
     {
         $gregorianDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 

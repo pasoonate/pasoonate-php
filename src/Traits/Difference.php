@@ -7,7 +7,7 @@ use Pasoonate\Constants;
 
 trait Difference
 {
-    public function diff(CalendarManager $instance)
+    public function diff(CalendarManager $instance): \stdClass
     {
         $diffInSeconds = $this->diffInSeconds($instance);
         $diffInDays = $diffInSeconds / Constants::DAY_IN_SECONDS;
@@ -30,22 +30,14 @@ trait Difference
         return $diff;
     }
 
-    /**
-     * @param CalendarManager instance
-     * @return int
-     */
-    public function diffInSeconds($instance)
+    public function diffInSeconds($instance): int
     {
         $diffInSeconds = abs($this->getTimestamp() - $instance->getTimestamp());
 
         return $diffInSeconds;
     }
 
-    /**
-     * @param CalendarManager instance
-     * @return int
-     */
-    public function diffInMinutes($instance)
+    public function diffInMinutes(CalendarManager $instance): int
     {
         $diffInSeconds = abs($this->getTimestamp() - $instance->getTimestamp());
         $diffInMinutes = $diffInSeconds >= Constants::SECONDS_PER_MINUTE ? (int)($diffInSeconds / Constants::SECONDS_PER_MINUTE) : 0;
@@ -53,11 +45,7 @@ trait Difference
         return $diffInMinutes;
     }
 
-    /**
-     * @param CalendarManager instance
-     * @return int
-     */
-    public function diffInHours($instance)
+    public function diffInHours(CalendarManager $instance): int
     {
         $diffInSeconds = abs($this->getTimestamp() - $instance->getTimestamp());
         $diffInHours = $diffInSeconds >= Constants::HOUR_IN_SECONDS ? (int)($diffInSeconds / Constants::HOUR_IN_SECONDS) : 0;
@@ -65,11 +53,7 @@ trait Difference
         return $diffInHours;
     }
 
-    /**
-     * @param CalendarManager instance
-     * @return int
-     */
-    public function diffInDays($instance)
+    public function diffInDays(CalendarManager $instance): int
     {
         $diffInSeconds = abs($this->getTimestamp() - $instance->getTimestamp());
         $diffInDays = $diffInSeconds >= Constants::DAY_IN_SECONDS ? (int)($diffInSeconds / Constants::DAY_IN_SECONDS) : 0;
@@ -77,11 +61,7 @@ trait Difference
         return $diffInDays;
     }
 
-    /**
-     * @param CalendarManager instance
-     * @return int
-     */
-    public function diffInMonths($instance)
+    public function diffInMonths(CalendarManager $instance): int
     {
         $diffInSeconds = abs($this->getTimestamp() - $instance->getTimestamp());
         $diffInMonths = $diffInSeconds >= Constants::MONTH_IN_SECONDS ? (int)($diffInSeconds / Constants::MONTH_IN_SECONDS) : 0;
@@ -89,11 +69,7 @@ trait Difference
         return $diffInMonths;
     }
 
-    /**
-     * @param CalendarManager instance
-     * @return int
-     */
-    public function diffInYears($instance)
+    public function diffInYears(CalendarManager $instance): int
     {
         $diffInSeconds = abs($this->getTimestamp() - $instance->getTimestamp());
         $diffInYears = $diffInSeconds >= Constants::YEAR_IN_SECONDS ? (int)($diffInSeconds / Constants::YEAR_IN_SECONDS) : 0;

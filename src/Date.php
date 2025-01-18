@@ -4,19 +4,11 @@ namespace Pasoonate;
 
 class Date
 {
-    public $year;
-    public $month;
-    public $day;
-
-    /**
-     * @param int $year
-     * @param int $month
-     * @param int $day
-     */
-    public function __construct($year = 0, $month = 0, $day = 0)
+    public function __construct(
+        public int $year = 0,
+        public int $month = 0,
+        public int $day = 0
+    )
     {
-        $this->year = intval($year);
-        $this->month = intval($month);
-        $this->day = intval($day);
     }
 }

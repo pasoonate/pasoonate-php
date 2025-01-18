@@ -4,65 +4,63 @@ namespace Pasoonate;
 
 class Localization
 {
-    public $langs;
-    public $locale;
-
-    public function __construct()
+    public function __construct(
+        public array  $langs = [],
+        public string $locale = 'fa'
+    )
     {
-        $this->langs = [];
-        $this->locale = 'fa';
     }
 
-    public function setLang($name, $trans)
+    public function setLang(string $name, array $trans): void
     {
         $this->langs[$name] = $trans;
     }
 
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }
 
-    public function setLocale($locale)
+    public function setLocale(string $locale): void
     {
-        $this->locale = $locale ?? $this->locale;
+        $this->locale = $locale;
     }
 
-    public function isLocale($locale)
+    public function isLocale(string $locale): bool
     {
         return $this->locale === $locale;
-    }  
-    
-    public function hasTransKey($key, $locale)
+    }
+
+    public function hasTransKey(string $key, string $locale): bool
     {
         $subKeys = explode('.', $key);
-        
+
         if (!isset($this->langs[$locale])) {
             return false;
         }
-        
+
         $result = $this->langs[$locale];
-        
+
         for ($i = 0; $i < count($subKeys); $i++) {
             if (isset($result[$subKeys[$i]])) {
                 $result = $result[$subKeys[$i]];
                 continue;
             }
-            
+
             return false;
         }
-        
+
         return $result;
     }
 
-    public function getTrans($key, $locale)
+    public function getTrans(string $key, string $locale): string
     {
         $result = $this->hasTransKey($key, $locale);
 
         return $result ? $result : $key;
     }
 
-    public function trans($key, $locale)
+    public function trans(string|null $key = null, string|null $locale = null): string
     {
         $locale = $locale ?? $this->locale;
         $key = $key ?? '';

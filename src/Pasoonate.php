@@ -10,74 +10,48 @@ use Pasoonate\Parsers\SimpleParser;
 
 class Pasoonate extends Constants
 {
-    /**
-     * @var Localization
-     */
-    public static $localization;
+    public static Localization $localization;
 
-    /**
-     * @var DateFormat
-     */
-    public static $formatter;
+    public static DateFormat $formatter;
 
-    /**
-     * @var Parser
-     */
-    public static $parser;
+    public static Parser $parser;
 
-    /**
-     * @param int|null $timestamp
-     * @param int|null $timezoneOffset
-     * 
-     * @return CalendarManager
-     */
-    public static function make($timestamp = null, $timezoneOffset = null)
+    public static function make(int|null $timestamp = null, int|null $timezoneOffset = null): CalendarManager
     {
         return new CalendarManager($timestamp, $timezoneOffset);
     }
 
-    public static function trans($key, $locale = null)
+    public static function trans(string $key, $locale = null): string
     {
         return Pasoonate::$localization->trans($key, $locale);
     }
 
-    public static function setLocale($locale)
+    public static function setLocale(string $locale): void
     {
         Pasoonate::$localization->setLocale($locale);
     }
 
-    public static function getLocale()
+    public static function getLocale(): string
     {
         return Pasoonate::$localization->getLocale();
     }
 
-    public static function isLocale($locale)
+    public static function isLocale($locale): bool
     {
         return Pasoonate::$localization->isLocale($locale);
     }
 
-    /**
-     * @param DateFormat $formatter
-     */
-    public static function setFormatter($formatter)
+    public static function setFormatter(DateFormat|null $formatter): void
     {
         Pasoonate::$formatter = $formatter instanceof DateFormat ? $formatter : new SimpleDateFormat();
     }
 
-    /**
-     * @param Parser $parser
-     */
-    public static function setParser($parser)
+    public static function setParser(Parser|null $parser): void
     {
         Pasoonate::$parser = $parser instanceof Parser ? $parser : new SimpleParser();
     }
 
-    /**
-     * @param CalendarManager $instance
-     * 
-     * @return CalendarManager
-     */
-    public static function clone(CalendarManager $instance)
+    public static function clone(CalendarManager $instance): CalendarManager
     {
         return Pasoonate::make($instance->getTimestamp(), $instance->getTimezoneOffset());
     }

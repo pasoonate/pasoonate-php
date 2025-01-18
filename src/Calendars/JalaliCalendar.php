@@ -13,7 +13,7 @@ class JalaliCalendar extends Calendar
         parent::__construct(Constants::JALALI);
     }
 
-    public function julianDayToDate($julianDay)
+    public function julianDayToDate(float $julianDay): DateTime
     {
         $timestamp = $this->julianDayToTimestamp($julianDay);
         $base = $timestamp + 42531868800;
@@ -21,20 +21,20 @@ class JalaliCalendar extends Calendar
         $minute = floor($this->mod($base, Constants::HOUR_IN_SECONDS) / Constants::MINUTES_PER_HOUR);
         $hour = floor($this->mod($base, Constants::DAY_IN_SECONDS) / Constants::HOUR_IN_SECONDS);
         $days = floor($base / Constants::DAY_IN_SECONDS);
-        $fyear = floor($days / Constants::DAYS_OF_TROPICAL_JALALI_YEAR); 
-        $year = floor($days / Constants::DAYS_OF_JALALI_YEAR); 
+        $fyear = floor($days / Constants::DAYS_OF_TROPICAL_JALALI_YEAR);
+        $year = floor($days / Constants::DAYS_OF_JALALI_YEAR);
         $dayOfYear = $days - floor($fyear * Constants::DAYS_OF_TROPICAL_JALALI_YEAR);
 
-        if($this->isLeap($fyear)) {
+        if ($this->isLeap($fyear)) {
             $dayOfYear--;
         }
 
-        if($dayOfYear >= Constants::DAYS_OF_JALALI_YEAR && !$this->isLeap($year)) {
+        if ($dayOfYear >= Constants::DAYS_OF_JALALI_YEAR && !$this->isLeap($year)) {
             $dayOfYear = 0;
             $year++;
         }
 
-        if($year === $fyear) {
+        if ($year === $fyear) {
             $year++;
         }
 
@@ -46,7 +46,7 @@ class JalaliCalendar extends Calendar
         return $datetime;
     }
 
-    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
+    public function dateToJulianDay(int $year, int $month, int $day, int $hour, int $minute, int $second): float
     {
         $timestamp = 0;
         $days = 0;
@@ -55,20 +55,20 @@ class JalaliCalendar extends Calendar
         $days += $month <= 7 ? (($month - 1) * 31) : ((($month - 1) * 30) + 6);
         $days += $day - 1;
 
-        if($this->isLeap($year - 1)) {
+        if ($this->isLeap($year - 1)) {
             $days++;
         }
 
         $timestamp += $days * Constants::DAY_IN_SECONDS;
         $timestamp += ($hour * Constants::HOUR_IN_SECONDS) + ($minute * Constants::SECONDS_PER_MINUTE) + $second;
         $timestamp -= 42531868800;
-        
+
         $julianDay = $this->timestampToJulianDay($timestamp);
 
-		return $julianDay;
+        return $julianDay;
     }
 
-    public function daysInMonth($year, $month)
+    public function daysInMonth(int $year, int $month): int
     {
         $gregorianDaysInMonth = array(31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29); //30
 
@@ -83,13 +83,13 @@ class JalaliCalendar extends Calendar
         return $gregorianDaysInMonth[$month - 1];
     }
 
-    public function isLeap($year)
+    public function isLeap(int $year): bool
     {
-        $validRemainValueAfter1343 = [1,5,9,13,17,22,26,30];
-        $validRemainValueBefore1343 = [1,5,9,13,17,21,26,30];
+        $validRemainValueAfter1343 = [1, 5, 9, 13, 17, 22, 26, 30];
+        $validRemainValueBefore1343 = [1, 5, 9, 13, 17, 21, 26, 30];
 
         $remain = $year % 33;
 
-	    return $year < 1343 ? in_array($remain, $validRemainValueBefore1343) : in_array($remain, $validRemainValueAfter1343);
+        return $year < 1343 ? in_array($remain, $validRemainValueBefore1343) : in_array($remain, $validRemainValueAfter1343);
     }
 }

@@ -13,7 +13,7 @@ class IslamicCalendar extends Calendar
         parent::__construct('islamic');
     }
 
-    public function julianDayToDate($julianDay)
+    public function julianDayToDate(float $julianDay): DateTime
     {
         $time = $this->extractJulianDayTime($julianDay);
 
@@ -29,7 +29,7 @@ class IslamicCalendar extends Calendar
         return $datetime;
     }
 
-    public function dateToJulianDay($year, $month, $day, $hour, $minute, $second)
+    public function dateToJulianDay(int $year, int $month, int $day, int $hour, int $minute, int $second): float
     {
         $julianDay = $day;
 
@@ -37,11 +37,11 @@ class IslamicCalendar extends Calendar
         $julianDay += ($year - 1) * 354;
         $julianDay += floor(((11 * $year) + 3) / 30);
         $julianDay += Constants::ISLAMIC_EPOCH - 1;
-        
+
         return $this->addTimeToJulianDay($julianDay, $hour, $minute, $second);
     }
 
-    public function daysInMonth($year, $month)
+    public function daysInMonth(int $year, int $month): int
     {
         $islamicDaysInMonth = array(30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29); //30
 
@@ -56,7 +56,7 @@ class IslamicCalendar extends Calendar
         return $islamicDaysInMonth[$month - 1];
     }
 
-    public function isLeap($year)
+    public function isLeap(int $year): bool
     {
         return ((($year * 11) + 14) % 30) < 11;
     }

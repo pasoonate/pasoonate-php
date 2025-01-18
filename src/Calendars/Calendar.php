@@ -10,32 +10,19 @@ use stdClass;
 
 abstract class Calendar
 {
-    protected $name;
+    protected string $name;
 
-    /**
-     * @param string $name
-     * 
-     * @return void
-     */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    final public function getName()
+    final public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param int $timestamp
-     * 
-     * @return float
-     */
-    final public function timestampToJulianDay($timestamp)
+    final public function timestampToJulianDay(int $timestamp): float
     {
         $julianDay = ($timestamp / Constants::DAY_IN_SECONDS) + Constants::J1970;
 
@@ -44,34 +31,19 @@ abstract class Calendar
         return floor($julianDay) + $julianDayFloatRounded;
     }
 
-    /**
-     * @param float $julianDay
-     * 
-     * @return int
-     */
-    final public function julianDayToTimestamp($julianDay)
+    final public function julianDayToTimestamp(float $julianDay): int
     {
         $timestamp = round(($julianDay - Constants::J1970) * Constants::DAY_IN_SECONDS);
-        
+
         return $timestamp;
     }
 
-    /**
-     * @param float $julianDay
-     * 
-     * @return float
-     */
-    final public function julianDayWithoutTime($julianDay)
+    final public function julianDayWithoutTime(float $julianDay): float
     {
         return floor($julianDay) + (($julianDay - floor($julianDay)) >= 0.5 ? 0.5 : -0.5);
     }
 
-    /**
-     * @param float $julianDay
-     * 
-     * @return Time
-     */
-    final public function extractJulianDayTime($julianDay)
+    final public function extractJulianDayTime(float $julianDay): Time
     {
         $julianDay += 0.5;
 
@@ -81,15 +53,7 @@ abstract class Calendar
         return new Time(floor($time / Constants::HOUR_IN_SECONDS), floor($time / Constants::MINUTES_PER_HOUR) % Constants::SECONDS_PER_MINUTE, floor($time % Constants::SECONDS_PER_MINUTE));
     }
 
-    /**
-     * @param float $julianDay
-     * @param int $hour
-     * @param int $minute
-     * @param int $second
-     * 
-     * @return float
-     */
-    final public function addTimeToJulianDay($julianDay, $hour, $minute, $second)
+    final public function addTimeToJulianDay(float $julianDay, int $hour, int $minute, int $second): float
     {
         $timestamp = $this->julianDayToTimestamp($julianDay);
         $timestamp += ($hour * Constants::HOUR_IN_SECONDS) + ($minute * Constants::MINUTES_PER_HOUR) + $second;
@@ -100,116 +64,60 @@ abstract class Calendar
         return floor($julianDay) + $julianDayFloatRounded;
     }
 
-    /**
-     * @param int $year
-     * @param int $month
-     * @param int $day
-     * @param int $hour
-     * @param int $minute
-     * @param int $second
-     * 
-     * @return float
-     */
-    abstract public function dateToJulianDay($year, $month, $day, $hour, $minute, $second);
-    
-    /**
-     * @param int $year
-     * @param int $month
-     * @param int $day
-     * @param int $hour
-     * @param int $minute
-     * @param int $second
-     * 
-     * @return int
-     */
-    final public function dateToTimestamp($year, $month, $day, $hour, $minute, $second)
+    abstract public function dateToJulianDay(int $year, int $month, int $day, int $hour, int $minute, int $second): float;
+
+    final public function dateToTimestamp(int $year, int $month, int $day, int $hour, int $minute, int $second): int
     {
         $julianDay = $this->dateToJulianDay($year, $month, $day, $hour, $minute, $second);
-        
+
         return $this->julianDayToTimestamp($julianDay);
     }
-   
-    /**
-     * @param float $julianDay
-     * 
-     * @return DateTime
-     */
-    abstract public function julianDayToDate($julianDay);
 
-    /**
-     * @param int $timestamp
-     * 
-     * @return DateTime
-     */
-    final public function timestampToDate($timestamp)
+    abstract public function julianDayToDate(float $julianDay): DateTime;
+
+    final public function timestampToDate(int $timestamp): DateTime
     {
         $julianDay = $this->timestampToJulianDay($timestamp);
 
         return $this->julianDayToDate($julianDay);
     }
 
-    /**
-     * @param int $year
-     * @param int $month
-     * 
-     * @param int
-     */
-    abstract public function daysInMonth($year, $month);
+    abstract public function daysInMonth(int $year, int $month): int;
 
-    /**
-     * @param int $timestamp
-     * 
-     * @return int
-     */
-    final public function dayOfWeek($timestamp)
+    final public function dayOfWeek(int $timestamp): int
     {
         $julianDay = $this->timestampToJulianDay($timestamp);
 
         return intval($this->mod(floor($julianDay + 2.5), Constants::DAYS_PER_WEEK));
     }
 
-    /**
-     * @param int $timestamp
-     * 
-     * @return int
-     */
-    final public function dayOfYear($timestamp)
+    final public function dayOfYear(int $timestamp): int
     {
         $currentDate = $this->timestampToDate($timestamp);
         $firstOfYearJulianDay = $this->dateToJulianDay($currentDate->year, 1, 1, 0, 0, 0);
         $currentJulianDay = $this->dateToJulianDay($currentDate->year, $currentDate->month, $currentDate->day, $currentDate->hour, $currentDate->minute, $currentDate->second);
-        
+
         return intval(floor($currentJulianDay - $firstOfYearJulianDay + 1));
     }
 
-    /**
-     * @param int $timestamp
-     * 
-     * @return int
-     */
-    final public function weekOfMonth($timestamp)
+    final public function weekOfMonth(int $timestamp): int
     {
         $currentDate = $this->timestampToDate($timestamp);
         $firstDayOfMonthTimestamp = $this->dateToTimestamp($currentDate->year, $currentDate->month, 1, $currentDate->hour, $currentDate->minute, $currentDate->second);
         $dayOfWeekInCurrentDayOfMonth = $this->dayOfWeek($timestamp);
         $dayOfWeekInFirstDayOfMonth = $this->dayOfWeek($firstDayOfMonthTimestamp);
         $week = 1;
-        
+
         if ($currentDate->day <= (Constants::DAYS_PER_WEEK - $dayOfWeekInFirstDayOfMonth)) {
             return $week;
         }
 
         $week += (($currentDate->day - ((Constants::DAYS_PER_WEEK - $dayOfWeekInFirstDayOfMonth) + ($dayOfWeekInCurrentDayOfMonth + 1))) / 7) + 1;
-        
+
         return $week;
     }
 
-    /**
-     * @param int $timestamp
-     * 
-     * @return int
-     */
-    final public function weekOfYear($timestamp)
+    final public function weekOfYear(int $timestamp): int
     {
         $currentDate = $this->timestampToDate($timestamp);
         $dayOfYear = $this->dayOfYear($timestamp);
@@ -223,25 +131,14 @@ abstract class Calendar
         }
 
         $week += (($dayOfYear - ((Constants::DAYS_PER_WEEK - $dayOfWeekInFirstDayOfYear) + ($dayOfWeekInCurrentDayOfYear + 1))) / Constants::DAYS_PER_WEEK) + 1;
-        
+
         return $week;
     }
 
-    /**
-     * @param int $a
-     * @param int $b
-     * 
-     * @return int
-     */
-    final public function mod($a, $b)
+    final public function mod(int $a, int $b): int
     {
         return $a - ($b * floor($a / $b));
     }
 
-    /**
-     * @param int $year
-     * 
-     * @return bool
-     */
-    abstract public function isLeap($year);
+    abstract public function isLeap(int $year): bool;
 }

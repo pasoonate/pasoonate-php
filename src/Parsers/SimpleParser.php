@@ -28,13 +28,7 @@ class SimpleParser extends Parser
         parent::__construct();
     }
 
-    /**
-     * @param string $format
-     * @param string $text
-     * 
-     * @return void
-     */
-    public function parse($format, $text)
+    public function parse(string $format, string $text): void
     {
         $result = $this->translate($format);
         $components = $this->match($result['pattern'], $text, $result['sequence']);
@@ -42,71 +36,64 @@ class SimpleParser extends Parser
         $calendar = $this->getCalendar();
 
         $dateTime = $calendar->getDateTime();
-        
-        foreach($components as $key => $value) {
-            switch($key) {
+
+        foreach ($components as $key => $value) {
+            switch ($key) {
                 case self::FULL_YEAR:
                 case self::SHORT_YEAR:
                     $dateTime->year = (int)$value;
-                break;
+                    break;
                 case self::FULL_MONTH:
                 case self::SHORT_MONTH:
                     $dateTime->month = (int)$value;
-                break;
+                    break;
                 case self::FULL_DAY:
                 case self::SHORT_DAY:
                     $dateTime->day = (int)$value;
-                break;
+                    break;
                 case self::FULL_HOUR:
                 case self::SHORT_HOUR:
                     $dateTime->hour = (int)$value;
-                break;
+                    break;
                 case self::FULL_MINUTE:
                 case self::SHORT_MINUTE:
                     $dateTime->minute = (int)$value;
-                break;
+                    break;
                 case self::FULL_SECOND:
                 case self::SHORT_SECOND:
                     $dateTime->second = (int)$value;
-                break;
+                    break;
                 case self::FULL_MONTH_NAME:
                     $names = Pasoonate::trans($calendar->name() . '.month_name');
                     $month = array_search($value, $names);
 
-                    if($month > 0) {
+                    if ($month > 0) {
                         $dateTime->month = $month;
                     }
-                break;
+                    break;
                 case self::SHORT_MONTH_NAME:
                     $names = Pasoonate::trans($calendar->name() . '.short_month_name');
                     $month = array_search($value, $names);
 
-                    if($month > 0) {
+                    if ($month > 0) {
                         $dateTime->month = $month;
                     }
-                break;
+                    break;
                 case self::FULL_DAY_NAME:
                     // $names = Pasoonate::trans($calendar->name() . '.day_name');
-                   
-                break;
+
+                    break;
                 case self::SHORT_DAY_NAME:
                     // $names = Pasoonate::trans($calendar->name() . '.short_day_name');
-                    
-                break;
+
+                    break;
             }
         }
 
         $calendar->setDateTime($dateTime->year, $dateTime->month, $dateTime->day, $dateTime->hour, $dateTime->minute, $dateTime->second);
     }
 
-    /**
-     * Translate the format to the pattern
-     * 
-     * @param string $format
-     * 
-     * @return array $pattern as string and $sequence as string[]
-     */
-    public function translate($format)
+    public function translate(string $format): array
     {
         $categories = [];
         $sequence = [];
@@ -148,9 +135,9 @@ class SimpleParser extends Parser
 
             $prevChar = $currChar;
         }
-        
+
         foreach ($categories as $key => $value) {
-            if(isset($patterns[$value])) {
+            if (isset($patterns[$value])) {
                 $categories[$key] = $patterns[$value];
                 $sequence[] = $value;
             }
@@ -165,23 +152,15 @@ class SimpleParser extends Parser
         ];
     }
 
-    /**
-     * @param string $pattern
-     * @param string $text
-     * @param string[] $sequence
-     * 
-     * @return array
-     */
-    public function match($pattern, $text, array $sequence)
+    public function match(string $pattern, string $text, array $sequence): array
     {
-        if(!preg_match($pattern, $text, $matches))
-        {
+        if (!preg_match($pattern, $text, $matches)) {
             return [];
         }
-        
-        $components = [];      
 
-        for($i = 1; $i < count($matches); $i++) {
+        $components = [];
+
+        for ($i = 1; $i < count($matches); $i++) {
             $components[$sequence[$i - 1]] = $matches[$i];
         }
 

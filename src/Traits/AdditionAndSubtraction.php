@@ -2,11 +2,12 @@
 
 namespace Pasoonate\Traits;
 
+use Pasoonate\Calendars\CalendarManager;
 use Pasoonate\Constants;
 
-trait AdditionAndSubstraction
+trait AdditionAndSubtraction
 {
-    public function addYear($count)
+    public function addYear(int $count): CalendarManager
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
         $timestamp = $this->currentCalendar->dateToTimestamp($date->year + $count, $date->month, $date->day, $date->hour, $date->minute, $date->second);
@@ -15,7 +16,7 @@ trait AdditionAndSubstraction
         return $this;
     }
 
-    public function addMonth($count)
+    public function addMonth(int $count): CalendarManager
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
         $totalMonth = $date->month + $count;
@@ -31,35 +32,35 @@ trait AdditionAndSubstraction
         return $this;
     }
 
-    public function addDay($count)
+    public function addDay(int $count): CalendarManager
     {
         $this->timestamp = $this->timestamp + ($count * Constants::DAY_IN_SECONDS);
 
         return $this;
     }
 
-    public function addHour($count)
+    public function addHour(int $count): CalendarManager
     {
         $this->timestamp = $this->timestamp + ($count * 3600);
 
         return $this;
     }
 
-    public function addMinute($count)
+    public function addMinute(int $count): CalendarManager
     {
         $this->timestamp = $this->timestamp + ($count * 60);
 
         return $this;
     }
 
-    public function addSecond($count)
+    public function addSecond(int $count): CalendarManager
     {
         $this->timestamp = $this->timestamp + $count;
 
         return $this;
     }
 
-    public function subYear($count)
+    public function subYear(int $count): CalendarManager
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
         $timestamp = $this->currentCalendar->dateToTimestamp($date->year - $count, $date->month, $date->day, $date->hour, $date->minute, $date->second);
@@ -68,7 +69,7 @@ trait AdditionAndSubstraction
         return $this;
     }
 
-    public function subMonth($count)
+    public function subMonth(int $count): CalendarManager
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
         $totalMonth = $date->month - $count;
@@ -87,28 +88,28 @@ trait AdditionAndSubstraction
         return $this;
     }
 
-    public function subDay($count)
+    public function subDay(int $count): CalendarManager
     {
         $this->timestamp = $this->timestamp - ($count * 86400);
 
         return $this;
     }
 
-    public function subHour($count)
+    public function subHour(int $count): CalendarManager
     {
         $this->timestamp = $this->timestamp - ($count * 3600);
 
         return $this;
     }
 
-    public function subMinute($count)
+    public function subMinute(int $count): CalendarManager
     {
         $this->timestamp = $this->timestamp - ($count * 60);
 
         return $this;
     }
 
-    public function subSecond($count)
+    public function subSecond(int $count): CalendarManager
     {
         $this->timestamp = $this->timestamp - $count;
 
