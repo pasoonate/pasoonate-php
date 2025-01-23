@@ -30,7 +30,7 @@ class PasoonateTest extends TestCase
     public function testCalendarConvert()
     {
         $pasoonate = Pasoonate::make();
-        $date = $pasoonate->gregorian()->parse('yyyy-MM-dd HH:mm:dd', '2025-01-23 13:21:25')->jalali()->format('dddd, dd MMMM yyyy - H:m');
+        $date = $pasoonate->gregorian()->parse('yyyy-MM-dd HH:mm:ss', '2025-01-23 13:21:25')->jalali()->format('dddd, dd MMMM yyyy - H:m');
         $this->assertEquals($date, 'پنج‌شنبه, 04 بهمن 1403 - 13:21', 'Garegorian to Jalali is ok');
 
         $pasoonate = Pasoonate::make();
