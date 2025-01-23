@@ -275,11 +275,7 @@ trait Base
         return $this;
     }
 
-    /**
-     * @return DateTime
-     *
-     */
-    public function getDateTime()
+    public function getDateTime(): DateTime
     {
         return $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
     }

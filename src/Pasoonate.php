@@ -16,7 +16,7 @@ class Pasoonate extends Constants
 
     public static Parser $parser;
 
-    public static function make(int|null $timestamp = null, int|null $timezoneOffset = null): CalendarManager
+    public static function make(int|null $timestamp = null, string|int|null $timezoneOffset = null): CalendarManager
     {
         return new CalendarManager($timestamp, $timezoneOffset);
     }

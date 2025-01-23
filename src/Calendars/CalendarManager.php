@@ -19,26 +19,17 @@ class CalendarManager
     use Comparison;
     use Modifiers;
 
-    /**
-     * @var GregorianCalendar $gregorian
-     * @var JalaliCalendar $jalali
-     * @var IslamicCalendar $islamic
-     * @var ShiaCalendar $shia
-     * @var Calendar $currentCalendar
-     * @var DateFormat $formatter
-     * @var Parser $parser
-     */
-    private $gregorian;
-    private $jalali;
-    private $islamic;
-    private $shia;
-    private $currentCalendar;
-    private $formatter;
-    private $parser;
-    private $timestamp;
-    private $timezoneOffset;
+    private GregorianCalendar $gregorian;
+    private JalaliCalendar $jalali;
+    private IslamicCalendar $islamic;
+    private ShiaCalendar $shia;
+    private Calendar|null $currentCalendar;
+    private DateFormat $formatter;
+    private Parser $parser;
+    private int $timestamp;
+    private int $timezoneOffset;
 
-    public function __construct($timestamp, $timezoneOffset)
+    public function __construct(int|null $timestamp, string|int|null $timezoneOffset)
     {
         $this->gregorian = new GregorianCalendar();
         $this->jalali = new JalaliCalendar();
@@ -49,101 +40,70 @@ class CalendarManager
         $this->parser = Pasoonate::$parser;
 
         $this->timestamp = $timestamp ?? time();
-        $this->timezoneOffset = (is_null($timezoneOffset) || is_string($timezoneOffset)) ? $this->getDefaultTimezoneOffset($timezoneOffset) : $timezoneOffset;
-    }  
+        $this->timezoneOffset = is_string($timezoneOffset) || $timezoneOffset === null ? $this->getDefaultTimezoneOffset($timezoneOffset) : $timezoneOffset;;
+    }
 
-    /**
-     * @param string $datetime
-     * 
-     * @return CalendarManager
-     */
-    public function gregorian($datetime = null)
+    public function gregorian(string|null $datetime = null): CalendarManager
     {
         $this->currentCalendar = $this->gregorian;
-        
-        if($datetime) {
+
+        if ($datetime) {
             $this->parse('yyyy-MM-dd HH:mm:ss', $datetime);
         }
 
         return $this;
     }
 
-    /**
-     * @param string $datetime
-     * 
-     * @return CalendarManager
-     */
-    public function jalali($datetime = null)
+    public function jalali(string|null $datetime = null): CalendarManager
     {
         $this->currentCalendar = $this->jalali;
 
-        if($datetime) {
+        if ($datetime) {
             $this->parse('yyyy/MM/dd HH:mm:ss', $datetime);
         }
-        
+
         return $this;
     }
 
-    /**
-     * @param string $datetime
-     * 
-     * @return CalendarManager
-     */
-    public function islamic($datetime = null)
+    public function islamic(string|null $datetime = null): CalendarManager
     {
         $this->currentCalendar = $this->islamic;
 
-        if($datetime) {
+        if ($datetime) {
             $this->parse('yyyy-MM-dd HH:mm:ss', $datetime);
         }
 
         return $this;
     }
 
-    /**
-     * @param string $datetime
-     * 
-     * @return CalendarManager
-     */
-    public function shia($datetime = null)
+    public function shia(string|null $datetime = null): CalendarManager
     {
         $this->currentCalendar = $this->shia;
 
-        if($datetime) {
+        if ($datetime) {
             $this->parse('yyyy-MM-dd HH:mm:ss', $datetime);
         }
 
         return $this;
     }
 
-    /**
-     * @param string|null $calendar calendar name
-     * 
-     * @return string
-     */
-    public function name($calendar = null)
+    public function name(string|null $calendar = null): string
     {
-        if($calendar) {
+        if ($calendar) {
             $calendar = strtolower($calendar);
             $instance = $this->$calendar ?? null;
 
-            if($instance) {
+            if ($instance) {
                 $this->currentCalendar = $instance;
             }
 
-            return;
+            return '';
         }
 
         return $this->currentCalendar ? $this->currentCalendar->getName() : '';
     }
 
-    /**
-     * @param string $pattern
-     * @param string $text
-     * 
-     * @return CalendarManager
-     */
-    public function parse($pattern, $text)
+    public function parse(string $pattern, string $text): CalendarManager
     {
         $this->parser->setCalendar($this);
 
@@ -152,28 +112,19 @@ class CalendarManager
         return $this;
     }
 
-    /**
-     * @param string $pattern
-     * @param string|null $locale
-     * 
-     * @return string 
-     */
-    public function format($pattern, $locale = null)
+    public function format(string $pattern, string|null $locale = null): string
     {
         $this->formatter->setCalendar($this);
 
         return $this->formatter->format($pattern, $locale ?? Pasoonate::getLocale());
     }
 
-    /**
-     * @return CalendarManager
-     */
-    public function clone()
+    public function clone(): CalendarManager
     {
         return Pasoonate::make($this->getTimestamp(), $this->getTimezoneOffset());
     }
 
-    private function getDefaultTimezoneOffset($timezoneString = null)
+    private function getDefaultTimezoneOffset(string|null $timezoneString = null): int
     {
         $timezoneString = $timezoneString ?? date_default_timezone_get();
         $timezone = timezone_open($timezoneString);
