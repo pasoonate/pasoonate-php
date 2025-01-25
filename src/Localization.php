@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pasoonate;
 
 class Localization
@@ -31,7 +33,7 @@ class Localization
         return $this->locale === $locale;
     }
 
-    public function hasTransKey(string $key, string $locale): bool
+    public function hasTransKey(string $key, string $locale): false|string
     {
         $subKeys = explode('.', $key);
 
@@ -57,7 +59,7 @@ class Localization
     {
         $result = $this->hasTransKey($key, $locale);
 
-        return $result ? $result : $key;
+        return $result !== false ? $result : $key;
     }
 
     public function trans(string|null $key = null, string|null $locale = null): string

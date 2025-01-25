@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pasoonate\Calendars;
 
 use OutOfRangeException;
@@ -19,7 +21,7 @@ class ShiaCalendar extends Calendar
 
         $julianDay = $this->julianDayWithoutTime($julianDay);
 
-        $year = floor(((($julianDay - Constants::SHIA_EPOCH) * 30) + 10646) / 10631);
+        $year = (int)floor(((($julianDay - Constants::SHIA_EPOCH) * 30) + 10646) / 10631);
         $month = min(12, ceil(($julianDay - (29 + $this->julianDayWithoutTime($this->dateToJulianDay($year, 1, 1, $time->hour, $time->minute, $time->second)))) / 29.5) + 1);
         $dayOfYear = $julianDay - $this->julianDayWithoutTime($this->dateToJulianDay($year - 1, 12, $this->daysInMonth($year - 1, 12), $time->hour, $time->minute, $time->second));
         $days = 0;
@@ -34,7 +36,7 @@ class ShiaCalendar extends Calendar
         }
 
         //$day = ($julianDay - (($days - $this->daysInMonth($year, $month)) + (($year - 1) * 354) + floor((3 + (11 * $year)) / 30) + Constants::SHIA_EPOCH) + 1);
-        $day = $dayOfYear - ($days - $this->daysInMonth($year, $month));
+        $day = (int)$dayOfYear - ($days - $this->daysInMonth($year, $month));
 
         $datetime = new DateTime($year, $month, $day, $time->hour, $time->minute, $time->second);
 

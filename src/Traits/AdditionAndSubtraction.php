@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pasoonate\Traits;
 
 use Pasoonate\Calendars\CalendarManager;
@@ -20,7 +22,7 @@ trait AdditionAndSubtraction
     {
         $date = $this->currentCalendar->timestampToDate($this->timestamp + $this->timezoneOffset);
         $totalMonth = $date->month + $count;
-        $year = $date->year + floor($totalMonth / 12) - (($totalMonth % 12) == 0 ? 1 : 0);
+        $year = (int)($date->year + floor($totalMonth / 12) - (($totalMonth % 12) == 0 ? 1 : 0));
         $month = ($totalMonth % 12) == 0 ? 12 : ($totalMonth % 12);
 
         $daysInMonth = $this->currentCalendar->daysInMonth($year, $month);

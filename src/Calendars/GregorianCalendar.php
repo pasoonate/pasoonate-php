@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pasoonate\Calendars;
 
 use OutOfRangeException;
@@ -28,7 +30,7 @@ class GregorianCalendar extends Calendar
         $quad = floor($dcent / 1461);
         $dquad = $this->mod($dcent, 1461);
         $yindex = floor($dquad / 365);
-        $year = ($quadricent * 400) + ($cent * 100) + ($quad * 4) + $yindex;
+        $year =(int)(($quadricent * 400) + ($cent * 100) + ($quad * 4) + $yindex);
 
         if (!(($cent == 4) || ($yindex == 4))) {
             $year++;
@@ -45,8 +47,8 @@ class GregorianCalendar extends Calendar
         }
 
 
-        $month = floor(((($yearday + $leapadj) * 12) + 373) / 367);
-        $day = $wjd - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second)) + 1;
+        $month = (int)floor(((($yearday + $leapadj) * 12) + 373) / 367);
+        $day = (int)($wjd - $this->julianDayWithoutTime($this->dateToJulianDay($year, $month, 1, $time->hour, $time->minute, $time->second)) + 1);
 
         $datetime = new DateTime($year, $month, $day, $time->hour, $time->minute, $time->second);
 

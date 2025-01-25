@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pasoonate\Calendars;
 
 use Pasoonate\Constants;
@@ -33,7 +35,7 @@ abstract class Calendar
 
     final public function julianDayToTimestamp(float $julianDay): int
     {
-        $timestamp = round(($julianDay - Constants::J1970) * Constants::DAY_IN_SECONDS);
+        $timestamp = (int)round(($julianDay - Constants::J1970) * Constants::DAY_IN_SECONDS);
 
         return $timestamp;
     }
@@ -50,7 +52,7 @@ abstract class Calendar
         // Astronomical to civil
         $time = round(($julianDay - floor($julianDay)) * Constants::DAY_IN_SECONDS);
 
-        return new Time(floor($time / Constants::HOUR_IN_SECONDS), floor($time / Constants::MINUTES_PER_HOUR) % Constants::SECONDS_PER_MINUTE, floor($time % Constants::SECONDS_PER_MINUTE));
+        return new Time((int)floor($time / Constants::HOUR_IN_SECONDS), floor($time / Constants::MINUTES_PER_HOUR) % Constants::SECONDS_PER_MINUTE, (int)floor($time % Constants::SECONDS_PER_MINUTE));
     }
 
     final public function addTimeToJulianDay(float $julianDay, int $hour, int $minute, int $second): float
@@ -135,7 +137,7 @@ abstract class Calendar
         return $week;
     }
 
-    final public function mod(int $a, int $b): int
+    final public function mod(int|float $a, int|float $b): int|float
     {
         return $a - ($b * floor($a / $b));
     }

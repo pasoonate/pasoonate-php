@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pasoonate\Formatters;
 
 use Pasoonate\Pasoonate;
@@ -28,12 +30,12 @@ class SimpleDateFormat extends DateFormat
         parent::__construct();
     }
 
-    public function format($pattern, $locale)
+    public function format(string $pattern,string $locale):string
     {
         return $this->compile($pattern, $locale);
     }
 
-    public function compile($pattern, $locale)
+    public function compile(string $pattern, string $locale): string
     {
         $categories = [];
         $prevChar = '';
@@ -59,52 +61,52 @@ class SimpleDateFormat extends DateFormat
             switch ($value) {
                 case self::FULL_YEAR:
                     $categories[$key] = $this->getCalendar()->getYear();
-                break;
+                    break;
                 case self::SHORT_YEAR:
                     $categories[$key] = substr(strval($this->getCalendar()->getYear()), -2, 2);
-                break;
+                    break;
                 case self::FULL_MONTH_NAME:
-                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.month_name.{$this->getCalendar()->getMonth()}");
-                break;
+                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.month_name.{$this->getCalendar()->getMonth()}", $locale);
+                    break;
                 case self::SHORT_MONTH_NAME:
-                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.short_month_name.{$this->getCalendar()->getMonth()}");
-                break;
+                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.short_month_name.{$this->getCalendar()->getMonth()}", $locale);
+                    break;
                 case self::FULL_MONTH:
                     $categories[$key] = $this->getCalendar()->getMonth() > 9 ? $this->getCalendar()->getMonth() : "0{$this->getCalendar()->getMonth()}";
-                break;
+                    break;
                 case self::SHORT_MONTH:
                     $categories[$key] = $this->getCalendar()->getMonth();
-                break;
+                    break;
                 case self::FULL_DAY_NAME:
-                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.day_name.{$this->getCalendar()->dayOfWeek()}");
-                break;
+                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.day_name.{$this->getCalendar()->dayOfWeek()}", $locale);
+                    break;
                 case self::SHORT_DAY_NAME:
-                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.short_day_name.{$this->getCalendar()->dayOfWeek()}");
-                break;
+                    $categories[$key] = Pasoonate::trans("{$this->getCalendar()->name()}.short_day_name.{$this->getCalendar()->dayOfWeek()}", $locale);
+                    break;
                 case self::FULL_DAY:
                     $categories[$key] = $this->getCalendar()->getDay() > 9 ? $this->getCalendar()->getDay() : "0{$this->getCalendar()->getDay()}";
-                break;
+                    break;
                 case self::SHORT_DAY:
                     $categories[$key] = $this->getCalendar()->getDay();
-                break;
+                    break;
                 case self::FULL_HOUR:
                     $categories[$key] = $this->getCalendar()->getHour() > 9 ? $this->getCalendar()->getHour() : "0{$this->getCalendar()->getHour()}";
-                break;
+                    break;
                 case self::SHORT_HOUR:
                     $categories[$key] = $this->getCalendar()->getHour();
-                break;
+                    break;
                 case self::FULL_MINUTE:
                     $categories[$key] = $this->getCalendar()->getMinute() > 9 ? $this->getCalendar()->getMinute() : "0{$this->getCalendar()->getMinute()}";
-                break;
+                    break;
                 case self::SHORT_MINUTE:
                     $categories[$key] = $this->getCalendar()->getMinute();
-                break;
+                    break;
                 case self::FULL_SECOND:
                     $categories[$key] = $this->getCalendar()->getSecond() > 9 ? $this->getCalendar()->getSecond() : "0{$this->getCalendar()->getSecond()}";
-                break;
+                    break;
                 case self::SHORT_SECOND:
                     $categories[$key] = $this->getCalendar()->getSecond();
-                break;
+                    break;
             }
         }
 

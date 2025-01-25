@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pasoonate\Calendars;
 
 use OutOfRangeException;
@@ -17,12 +19,12 @@ class JalaliCalendar extends Calendar
     {
         $timestamp = $this->julianDayToTimestamp($julianDay);
         $base = $timestamp + 42531868800;
-        $second = $this->mod($base, Constants::SECONDS_PER_MINUTE);
-        $minute = floor($this->mod($base, Constants::HOUR_IN_SECONDS) / Constants::MINUTES_PER_HOUR);
-        $hour = floor($this->mod($base, Constants::DAY_IN_SECONDS) / Constants::HOUR_IN_SECONDS);
-        $days = floor($base / Constants::DAY_IN_SECONDS);
-        $fyear = floor($days / Constants::DAYS_OF_TROPICAL_JALALI_YEAR);
-        $year = floor($days / Constants::DAYS_OF_JALALI_YEAR);
+        $second = (int)$this->mod($base, Constants::SECONDS_PER_MINUTE);
+        $minute = (int)floor($this->mod($base, Constants::HOUR_IN_SECONDS) / Constants::MINUTES_PER_HOUR);
+        $hour = (int)floor($this->mod($base, Constants::DAY_IN_SECONDS) / Constants::HOUR_IN_SECONDS);
+        $days = (int)floor($base / Constants::DAY_IN_SECONDS);
+        $fyear = (int)floor($days / Constants::DAYS_OF_TROPICAL_JALALI_YEAR);
+        $year = (int)floor($days / Constants::DAYS_OF_JALALI_YEAR);
         $dayOfYear = $days - floor($fyear * Constants::DAYS_OF_TROPICAL_JALALI_YEAR);
 
         if ($this->isLeap($fyear)) {
@@ -38,8 +40,8 @@ class JalaliCalendar extends Calendar
             $year++;
         }
 
-        $month = floor($dayOfYear <= 186 ? ($dayOfYear / 31) : (($dayOfYear - 6) / 30)) + 1;
-        $day = $dayOfYear - ($month <= 7 ? ($month - 1) * 31 : (($month - 1) * 30) + 6) + 1;
+        $month = (int)floor($dayOfYear <= 186 ? ($dayOfYear / 31) : (($dayOfYear - 6) / 30)) + 1;
+        $day = (int)($dayOfYear - ($month <= 7 ? ($month - 1) * 31 : (($month - 1) * 30) + 6) + 1);
 
         $datetime = new DateTime($year, $month, $day, $hour, $minute, $second);
 
@@ -63,7 +65,7 @@ class JalaliCalendar extends Calendar
         $timestamp += ($hour * Constants::HOUR_IN_SECONDS) + ($minute * Constants::SECONDS_PER_MINUTE) + $second;
         $timestamp -= 42531868800;
 
-        $julianDay = $this->timestampToJulianDay($timestamp);
+        $julianDay = $this->timestampToJulianDay((int)$timestamp);
 
         return $julianDay;
     }

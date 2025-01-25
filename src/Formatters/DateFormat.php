@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pasoonate\Formatters;
 
 use Pasoonate\Calendars\CalendarManager;
@@ -23,7 +25,7 @@ class DateFormat
         $this->calendar = $calendar instanceof CalendarManager ? $calendar : null;
     }
 
-    public function format(string $pattern, string $locale)
+    public function format(string $pattern, string $locale): string
     {
         if ($this->getCalendar() === null) {
             return "";

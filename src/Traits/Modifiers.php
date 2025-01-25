@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pasoonate\Traits;
 
 use Pasoonate\Calendars\CalendarManager;
