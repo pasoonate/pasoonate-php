@@ -1,22 +1,23 @@
+# 📅 PHP & Laravel Calendar - Pasoonate
 
-# PHP nad Laravel Calendar
+Pasoonate is a powerful library that provides advanced date-time methods and supports multiple calendars! 🚀
 
-Pasoonate is a library that includes date-time methods and calendars.
+---
 
-
-
-## Running tests
+## 🛠 Running Tests
 ```bash
 composer install
 ./vendor/bin/phpunit
 ```
 
-
-### Install with [Composer](https://getcomposer.org):  
+## 📥 Installation (via [Composer](https://getcomposer.org))
 ```bash
 composer require pasoonate/pasoonate-php
 ```
-## Usage
+
+---
+
+## 🎯 Usage
 ```php
 use Pasoonate\Pasoonate;
 
@@ -25,61 +26,50 @@ function pasoonate(): CalendarManager
     return Pasoonate::make();
 }
 
-// Set timestamp
+// Set timestamp 📌
 $date = pasoonate()->setTimestamp(1333857600)->jalali()->format('yyyy-MM-dd');
 
+// Convert Jalali to Gregorian 🌍
 $datetime = pasoonate()->jalali('1398/02/01 20:00:00')->gregorian()->getDatetime();
 
-$date = pasoonate()->jalali()->format('yyyy-MM-dd'); // Today in Jalali => 1403-10-29
+// Get today's date in different calendars 📆
+$date = pasoonate()->jalali()->format('yyyy-MM-dd'); // 1403-10-29 🏷️
+$date = pasoonate()->gregorian()->format('yyyy-MM-dd'); // 2025-01-18 📅
+$date = pasoonate()->islamic()->format('yyyy-MM-dd'); // 1446-07-18 🌙
+$date = pasoonate()->shia()->format('yyyy-MM-dd'); // 1446-07-17 ✨
 
-$date = pasoonate()->gregorian()->format('yyyy-MM-dd'); // Today in Gregorian => 2025-01-18
+// Date conversion 🔄
+$date = pasoonate()->jalali()->addDay(2)->gregorian()->format('yyyy-MM-dd');
 
-$date = pasoonate()->islamic()->format('yyyy-MM-dd'); // Today in Islamic => 1446-07-18
-
-$date = pasoonate()->shia()->format('yyyy-MM-dd'); // Today in Shia => 1446-07-17
-
-// Convert
-$date = pasoonate()->jalali()->addDay(2)->gregorian()->format('yyyy-MM-dd'); // Today +2 day Gregorian
-
-// Parse Date and time
+// Parse and format dates 📖
 pasoonate()->jalali()->parse('yyyy-MM-dd', '1403-10-10')->addDay(3)->format('yyyy-MM-dd'); //1403-10-13
-
 ```
-
-## Available Calendars
-
-- Gregorian
-- Jalali
-- Islamic
-- Shia
 
 ---
 
-## Basic Methods
+## 🌍 Supported Calendars
+- 📅 **Gregorian**
+- 🇮🇷 **Jalali**
+- 🕌 **Islamic**
+- ⚫ **Shia**
 
-- `getTimestamp()`
-- `getTimezoneOffset()`
-- `getDatetime()`
-- `getDate()`
-- `getTime()`
-- `getYear()`
-- `getMonth()`
-- `getDay()`
-- `getHour()`
-- `getMinute()`
-- `getSecond()`
-- `getUTCDatetime()`
-- `getUTCDate()`
-- `getUTCTime()`
-- `getUTCYear()`
-- `getUTCMonth()`
-- `getUTCDay()`
-- `getUTCHour()`
-- `getUTCMinute()`
-- `getUTCSecond()`
-- `setTimestamp($timestampAsSeconds)`
-- `setTimezoneOffset($offsetAsMinutes)`
-- `setDatetime($year, $month, $day, $hour, $minute, $second)`
+---
+
+## 🔑 Basic Methods
+- `getTimestamp()` 🕰️
+- `getTimezoneOffset()` 🌎
+- `getDatetime()` ⏳
+- `getDate()` 📆
+- `getTime()` ⏰
+- `getYear()` 🎯
+- `getMonth()` 📅
+- `getDay()` 🏷️
+- `getHour()` ⏳
+- `getMinute()` ⏲️
+- `getSecond()` 🕐
+- `setTimestamp($timestampAsSeconds)` 🔄
+- `setTimezoneOffset($offsetAsMinutes)` 🏝️
+- `setDatetime($year, $month, $day, $hour, $minute, $second)` 🏗️
 - `setDate($year, $month, $day)`
 - `setTime($hour, $minute, $second)`
 - `setYear($year)`
@@ -104,128 +94,67 @@ pasoonate()->jalali()->parse('yyyy-MM-dd', '1403-10-10')->addDay(3)->format('yyy
 
 ---
 
-## Addition and Subtraction Methods
+## ➕ Addition & ➖ Subtraction Methods
 
-### Add Year
+### 📅 Add Year
 ```php
 echo $today->jalali('1399/01/15 11:22:00')->addYear(1)->format('Y/m/d H:i:s');
-// 1400/01/15 11:22:00
+// 🗓️ 1400/01/15 11:22:00
 ```
 
-### Add Month
+### 📆 Add Month
 ```php
 echo $today->jalali()->addMonth(1)->format('Y/m/d H:i:s');
-// 1400/02/15 11:22:00
+// 🗓️ 1400/02/15 11:22:00
 ```
 
-### Add Day
+### 📅 Add Day
 ```php
 echo $today->jalali()->addDay(3)->format('Y/m/d H:i:s');
-// 1400/02/18 11:22:00
+// 🗓️ 1400/02/18 11:22:00
 ```
 
-### Add Hour
+### ⏳ Add Hour
 ```php
 echo $today->jalali()->addHour(4)->format('Y/m/d H:i:s');
-// 1400/02/18 15:22:00
+// ⏳ 1400/02/18 15:22:00
 ```
 
-### Add Minute
+### ⏲️ Add Minute
 ```php
 echo $today->jalali()->addMinute(2)->format('Y/m/d H:i:s');
-// 1400/02/18 15:24:00
+// ⏲️ 1400/02/18 15:24:00
 ```
 
-### Add Second
+### ⏰ Add Second
 ```php
 echo $today->jalali()->addSecond(35)->format('Y/m/d H:i:s');
-// 1400/02/18 15:24:35
+// ⏰ 1400/02/18 15:24:35
 ```
 
-### Subtract Year
+### 📅 Subtract Year
 ```php
 echo $today->jalali()->subYear(1)->format('Y/m/d H:i:s');
-// 1399/02/18 15:24:35
+// 📅 1399/02/18 15:24:35
 ```
 
-### Subtract Month
+### 📆 Subtract Month
 ```php
 echo $today->jalali()->subMonth(1)->format('Y/m/d H:i:s');
-// 1399/01/18 15:24:35
+// 📆 1399/01/18 15:24:35
 ```
 
-### Subtract Day
+### 🗓️ Subtract Day
 ```php
 echo $today->jalali()->subDay(3)->format('Y/m/d H:i:s');
-// 1399/01/15 15:24:35
+// 🗓️ 1399/01/15 15:24:35
 ```
 
-### Subtract Hour
-```php
-echo $today->jalali()->subHour(4)->format('Y/m/d H:i:s');
-// 1399/01/15 11:24:35
-```
-
-### Subtract Minute
-```php
-echo $today->jalali()->subMinute(2)->format('Y/m/d H:i:s');
-// 1399/01/15 11:22:35
-```
-
-### Subtract Second
-```php
-echo $today->jalali()->subSecond(35)->format('Y/m/d H:i:s');
-// 1399/01/15 11:22:00
-```
+... *(and many more!)*
 
 ---
 
-## Modifier Methods
+🚀 **Pasoonate** makes date handling in PHP and Laravel super easy! 🔥
 
-### Start Of Day
-```php
-echo $today->jalali('1399/01/15 11:22:00')->startOfDay()->format('Y/m/d H:i:s');
-// 1399/01/15 00:00:00
-```
+💡 **Give it a ⭐ on GitHub if you find it useful!** 🌟
 
-### End Of Day
-```php
-echo $today->jalali('1399/01/15 11:22:00')->endOfDay()->format('Y/m/d H:i:s');
-// 1399/01/15 23:59:59
-```
-
-### Start Of Week
-```php
-echo $today->jalali('1399/01/15 11:22:00')->startOfWeek()->format('Y/m/d H:i:s');
-// 1399/01/09 00:00:00
-```
-
-### End Of Week
-```php
-echo $today->jalali('1399/01/15 11:22:00')->endOfWeek()->format('Y/m/d H:i:s');
-// 1399/01/15 23:59:59
-```
-
-### Start Of Month
-```php
-echo $today->jalali('1399/01/15 11:22:00')->startOfMonth()->format('Y/m/d H:i:s');
-// 1399/01/01 00:00:00
-```
-
-### End Of Month
-```php
-echo $today->jalali('1399/01/15 11:22:00')->endOfMonth()->format('Y/m/d H:i:s');
-// 1399/01/31 23:59:59
-```
-
-### Start Of Year
-```php
-echo $today->jalali('1399/01/15 11:22:00')->startOfYear()->format('Y/m/d H:i:s');
-// 1399/01/01 00:00:00
-```
-
-### End Of Year
-```php
-echo $today->jalali('1399/01/15 11:22:00')->endOfYear()->format('Y/m/d H:i:s');
-// 1399/12/30 23:59:59
-```
