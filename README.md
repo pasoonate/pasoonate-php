@@ -55,6 +55,52 @@ pasoonate()->jalali()->parse('yyyy-MM-dd', '1403-10-10')->addDay(3)->format('yyy
 
 ---
 
+## 📌 Commonly Used Date Functions in Projects
+
+### ✅ Get Today's Date
+```php
+$today = pasoonate()->jalali()->format('Y/m/d');
+```
+
+### 🔄 Convert Jalali to Gregorian
+```php
+$gregorianDate = pasoonate()->jalali('1403/10/10')->gregorian()->format('Y-m-d');
+```
+
+### 🔁 Convert Gregorian to Jalali
+```php
+$jalaliDate = pasoonate()->gregorian('2025-01-18')->jalali()->format('Y/m/d');
+```
+
+### ⏳ Get Start and End of the Month
+```php
+$startOfMonth = pasoonate()->jalali()->startOfMonth()->format('Y/m/d');
+$endOfMonth = pasoonate()->jalali()->endOfMonth()->format('Y/m/d');
+```
+
+### 🕰️ Get Start and End of the Year
+```php
+$startOfYear = pasoonate()->jalali()->startOfYear()->format('Y/m/d');
+$endOfYear = pasoonate()->jalali()->endOfYear()->format('Y/m/d');
+```
+
+### 📆 Check Leap Year
+```php
+$isLeap = pasoonate()->jalali()->isLeapYear(); // Returns true or false
+```
+
+### 🗓️ Get Day of the Week
+```php
+$dayOfWeek = pasoonate()->jalali()->dayOfWeek(); // 0 = Saturday, 6 = Friday
+```
+
+### 📅 Get Week Number of the Year
+```php
+$weekNumber = pasoonate()->jalali()->weekOfYear();
+```
+
+---
+
 ## 🔑 Basic Methods
 - `getTimestamp()` 🕰️
 - `getTimezoneOffset()` 🌎
